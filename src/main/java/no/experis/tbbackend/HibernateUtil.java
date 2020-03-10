@@ -2,7 +2,7 @@ package no.experis.tbbackend;
 
 import java.util.Properties;
 
-import no.experis.tbbackend.Models.User;
+import no.experis.tbbackend.Models.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
