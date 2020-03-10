@@ -55,4 +55,12 @@ public class User {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

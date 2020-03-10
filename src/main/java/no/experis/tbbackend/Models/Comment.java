@@ -30,12 +30,41 @@ public class Comment {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name= "vacationRequest_comments",
-            joinColumns = @JoinColumn(name= "comment_id"),
+            name = "vacationRequest_comments",
+            joinColumns = @JoinColumn(name = "comment_id"),
             inverseJoinColumns = @JoinColumn(name = "request_id")
     )
     private Set<VacationRequest> vacationRequests;
 
+    public int getComment_id() {
+        return comment_id;
+    }
 
+    public void setComment_id(int comment_id) {
+        this.comment_id = comment_id;
+    }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Set<User> getUser() {
+        return user;
+    }
+
+    public void setUser(Set<User> user) {
+        this.user = user;
+    }
+
+    public Set<VacationRequest> getVacationRequests() {
+        return vacationRequests;
+    }
+
+    public void setVacationRequests(Set<VacationRequest> vacationRequests) {
+        this.vacationRequests = vacationRequests;
+    }
 }
