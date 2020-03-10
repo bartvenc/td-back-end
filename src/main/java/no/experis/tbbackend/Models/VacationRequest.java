@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-
+import java.util.Set;
 
 
 @Entity
@@ -21,9 +21,27 @@ public class VacationRequest {
     private String period_start;
     private String period_end;
 
-    private int owner_id;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name= "request_user",
+            joinColumns = @JoinColumn(name= "request_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> owner;
 
-    private int state_id;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name= "request_state",
+            joinColumns = @JoinColumn(name= "request_id"),
+            inverseJoinColumns = @JoinColumn(name = "status_id")
+    )
+    private Set<VacationRequestStatus> status;
 
-    private int moderator_id;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name= "request_moderator",
+            joinColumns = @JoinColumn(name= "request_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> moderator_id;
 }
