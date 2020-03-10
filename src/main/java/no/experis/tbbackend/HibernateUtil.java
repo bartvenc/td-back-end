@@ -18,15 +18,19 @@ public class HibernateUtil {
                 // Hibernate settings equivalent to hibernate.cfg.xml's properties
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "org.postgresql.Driver");
-                settings.put(Environment.URL, "jdbc:postgresql://ec2-52-23-14-156.compute-1.amazonaws.com:5432/dcnm3v11tok31h");
-                settings.put(Environment.USER, "haicqdvkoyyqat");
-                settings.put(Environment.PASS, "4835cb64025aedb81995ad4062d0acf9414d49048ed48b45467de989d5e5340c");
+                settings.put(Environment.URL, "jdbc:postgresql://ec2-3-223-21-106.compute-1.amazonaws.com:5432/deb47u8n0v5g1g");
+                settings.put(Environment.USER, "plhfiwgrqjhoba");
+                settings.put(Environment.PASS, "bd974e99a28e34bc6d7b51f02b741fe76bd755da7f72449ffaa7ebf32fda90f6");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 settings.put(Environment.HBM2DDL_AUTO, "create-drop");
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(Comment.class);
+                configuration.addAnnotatedClass(IneligiblePeriod.class);
+                configuration.addAnnotatedClass(VacationRequest.class);
+                configuration.addAnnotatedClass(VacationRequestStatus.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);

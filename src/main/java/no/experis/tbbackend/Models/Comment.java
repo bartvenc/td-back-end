@@ -20,11 +20,22 @@ public class Comment {
     private int comment_id;
     private String message;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name= "comment_user",
+            joinColumns = @JoinColumn(name= "comment_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> user;
 
-    private int request_id;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name= "vacationRequest_comments",
+            joinColumns = @JoinColumn(name= "comment_id"),
+            inverseJoinColumns = @JoinColumn(name = "request_id")
+    )
+    private Set<VacationRequest> vacationRequests;
 
-    private int user_id;
 
 
 }
