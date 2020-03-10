@@ -1,15 +1,15 @@
 package no.experis.tbbackend.Repositories;
 
-import no.experis.tbbackend.HibernateUtil;
 import no.experis.tbbackend.Models.User;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.springframework.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+import java.util.Optional;
+/*
 public class UserRepo implements MainRepository<User> {
     @Override
-    public void save(User user){
+    public User save(User user){
         Transaction transaction = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
@@ -22,6 +22,7 @@ public class UserRepo implements MainRepository<User> {
             }
             e.printStackTrace();
         }
+        return user;
     }
 
     @Override
@@ -66,4 +67,15 @@ public class UserRepo implements MainRepository<User> {
             e.printStackTrace();
         }
     }
+
+}*/
+
+
+@Repository
+public interface UserRepo extends JpaRepository<User, Integer> {
+
+    Optional<User> findByEmail(String email);
+
+    Boolean existsByEmail(String email);
+
 }
