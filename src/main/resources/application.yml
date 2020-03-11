@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-52-23-14-156.compute-1.amazonaws.com:5432/dcnm3v11tok31h
-    username: haicqdvkoyyqat
-    password: 4835cb64025aedb81995ad4062d0acf9414d49048ed48b45467de989d5e5340c
+    url: jdbc:postgresql://ec2-34-206-252-187.compute-1.amazonaws.com:5432/dfpbfisca7nqil
+    username: cgjpjefxuznusc
+    password: 5f6f7f5537fe549e2c058c858e9de0b6e461b93b38adaf934e5dacf2c04707d8
 
   jpa:
     show-sql: true
@@ -17,9 +17,9 @@ spring:
       client:
         registration:
           google:
-            clientId: 5014057553-8gm9um6vnli3cle5rgigcdjpdrid14m9.apps.googleusercontent.com
-            clientSecret: tWZKVLxaD_ARWsriiiUFYoIk
-            redirectUri: "{baseUrl}/oauth2/callback/google"
+            clientId: 519435970083-r9oa6c8hnft92eb0sanoqvrp5fnp06j0.apps.googleusercontent.com
+            clientSecret: zI11pSBVj70_BldRbmqwMzjt
+            redirectUri: "http://localhost:8080/oauth2/callback/google"
             scope:
               - email
               - profile
@@ -33,6 +33,6 @@ app:
     # redirectUri mentioned by the frontend client in the /oauth2/authorize request.
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
-      - http://localhost:3000/oauth2/redirect
+      - http://localhost:8080/oauth2/redirect
       - myandroidapp://oauth2/redirect
       - myiosapp://oauth2/redirect

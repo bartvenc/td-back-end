@@ -1,4 +1,4 @@
-package no.experis.tbbackend.Exception;
+package no.experis.tbbackend.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
