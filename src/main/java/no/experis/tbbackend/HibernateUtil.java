@@ -27,6 +27,10 @@ public class HibernateUtil {
                 settings.put(Environment.HBM2DDL_AUTO, "create-drop");
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(Comment.class);
+                configuration.addAnnotatedClass(IneligiblePeriod.class);
+                configuration.addAnnotatedClass(VacationRequest.class);
+                configuration.addAnnotatedClass(VacationRequestStatus.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
