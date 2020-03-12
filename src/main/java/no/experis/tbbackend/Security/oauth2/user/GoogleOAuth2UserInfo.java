@@ -1,14 +1,13 @@
-package no.experis.tbbackend.Security.oauth2.user;
+package no.experis.tbbackend.security.oauth2.user;
 
 import java.util.Map;
 
-public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
+public class GoogleOAuth2UserInfo extends no.experis.tbbackend.security.oauth2.user.OAuth2UserInfo {
 
     public GoogleOAuth2UserInfo(Map<String, Object> attributes) {
         super(attributes);
     }
 
-    ///Get the sub value in the google header response
     @Override
     public String getId() {
         return (String) attributes.get("sub");

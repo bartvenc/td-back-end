@@ -1,12 +1,13 @@
-package no.experis.tbbackend.Security.oauth2;
+package no.experis.tbbackend.security.oauth2;
 
-import no.experis.tbbackend.Exception.OAuth2AuthenticationProcessingException;
-import no.experis.tbbackend.Models.AuthProvider;
 
-import no.experis.tbbackend.Models.User;
-import no.experis.tbbackend.Repositories.UserRepo;
-import no.experis.tbbackend.Security.oauth2.user.OAuth2UserInfo;
-import no.experis.tbbackend.Security.oauth2.user.OAuth2UserInfoFactory;
+import no.experis.tbbackend.exception.OAuth2AuthenticationProcessingException;
+import no.experis.tbbackend.model.AuthProvider;
+import no.experis.tbbackend.model.User;
+import no.experis.tbbackend.repository.UserRepository;
+import no.experis.tbbackend.security.UserPrincipal;
+import no.experis.tbbackend.security.oauth2.user.OAuth2UserInfo;
+import no.experis.tbbackend.security.oauth2.user.OAuth2UserInfoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -23,7 +24,7 @@ import java.util.Optional;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
-    private UserRepo userRepository;
+    private UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -70,6 +71,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        if(user.getName().equals("Admin")){
+            user.setAdmin(true);
+        }else{
+            user.setAdmin(false);
+        }
         return userRepository.save(user);
     }
 

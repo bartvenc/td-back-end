@@ -1,10 +1,9 @@
-package no.experis.tbbackend.Security;
+package no.experis.tbbackend.security;
 
 
-import no.experis.tbbackend.Exception.ResourceNotFoundException;
-import no.experis.tbbackend.Models.User;
-import no.experis.tbbackend.Repositories.UserRepo;
-import no.experis.tbbackend.Security.oauth2.UserPrincipal;
+import no.experis.tbbackend.exception.ResourceNotFoundException;
+import no.experis.tbbackend.model.User;
+import no.experis.tbbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,11 +11,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepo userRepository;
+    UserRepository userRepository;
 
     @Override
     @Transactional
@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email : " + email)
-                );
+        );
 
         return UserPrincipal.create(user);
     }
@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("User", "id", id)
+            () -> new ResourceNotFoundException("User", "id", id)
         );
 
         return UserPrincipal.create(user);

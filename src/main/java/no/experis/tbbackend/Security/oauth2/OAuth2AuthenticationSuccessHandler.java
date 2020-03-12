@@ -1,10 +1,13 @@
-package no.experis.tbbackend.Security.oauth2;
+package no.experis.tbbackend.security.oauth2;
 
-import no.experis.tbbackend.Configurations.AppProperties;
-import no.experis.tbbackend.Exception.BadRequestException;
-import no.experis.tbbackend.Utils.CookieUtils;
+import no.experis.tbbackend.config.AppProperties;
+import no.experis.tbbackend.exception.BadRequestException;
+import no.experis.tbbackend.security.TokenProvider;
+import no.experis.tbbackend.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -13,19 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
-import static no.experis.tbbackend.Security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-
-/**
- * On successful authentication, Spring security invokes the onAuthenticationSuccess() method of this class.
- *
- * */
-
-
-
-
+import static no.experis.tbbackend.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
