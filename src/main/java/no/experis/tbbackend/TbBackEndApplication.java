@@ -12,7 +12,7 @@ public class TbBackEndApplication {
 		SpringApplication.run(TbBackEndApplication.class, args);
 
 		UserRepo userRepo = new UserRepo();
-		User user1 = new User("JohnWick", "null", true);
+		User user1 = new User("JohnWick", "null", "lol", true);
 
 		userRepo.save(user1);
 

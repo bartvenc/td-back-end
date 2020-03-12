@@ -18,18 +18,29 @@ public class User {
     private String profileImage;
     private boolean isAdmin;
     private String name;
+    private String email;
 
 
-    public User(){
+    public User() {
         this.name = "null";
         this.profileImage = "null";
         this.isAdmin = false;
+        this.email = "null";
     }
 
-    public User(String name, String profileImage, boolean isAdmin){
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User(String name, String profileImage, String email, boolean isAdmin) {
         this.name = name;
         this.isAdmin = isAdmin;
         this.profileImage = profileImage;
+        this.email = email;
     }
 
     public int getId() {

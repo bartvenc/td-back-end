@@ -33,6 +33,12 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
         }
     }
 
+    public List<VacationRequest> findAllByUserId(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("from request_user where user_id = id", VacationRequest.class).list();
+        }
+    }
+
     @Override
     public VacationRequest findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
