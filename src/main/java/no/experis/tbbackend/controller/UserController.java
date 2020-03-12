@@ -16,16 +16,16 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/user/me")
+    @GetMapping("/admin/me")
     @PreAuthorize("hasRole('ADMIN')")
     public User getAdminCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
         return userRepository.findByEmail(userPrincipal.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
     @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
     public User getCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
-        return userRepository.findByEmail(userPrincipal.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+        System.out.println("CALLING /USER/ME");
+        return  userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 }
 
