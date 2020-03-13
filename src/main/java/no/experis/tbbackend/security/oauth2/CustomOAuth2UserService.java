@@ -71,7 +71,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
-        if (user.getName().equals("Admin")) {
+        if (user.getEmail().equals("td4min1@gmail.com")) {
             user.setAdmin(true);
         } else {
             user.setAdmin(false);
