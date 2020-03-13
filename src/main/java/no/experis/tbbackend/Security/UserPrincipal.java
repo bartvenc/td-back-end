@@ -1,4 +1,4 @@
-package no.experis.tbbackend.security;
+package no.experis.tbbackend.Security;
 
 
 import no.experis.tbbackend.model.User;
@@ -27,7 +27,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     public static UserPrincipal create(User user) {
-        if(user.isAdmin()){
+        if (user.isAdmin()) {
             List<GrantedAuthority> authorities = Collections.
                     singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
@@ -37,8 +37,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
                     user.getPassword(),
                     authorities
             );
-        }else{
-            System.out.println("THIS USER IS NOT ADMIN "+user.getName());
+        } else {
             List<GrantedAuthority> authorities = Collections.
                     singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 

@@ -1,4 +1,5 @@
-package no.experis.tbbackend.Models;
+package no.experis.tbbackend.model;
+
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -60,3 +61,4 @@ public class IneligiblePeriod {
         this.created_by = created_by;
     }
 }
+

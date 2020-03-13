@@ -1,10 +1,10 @@
 package no.experis.tbbackend.controller;
 
-import no.experis.tbbackend.exception.ResourceNotFoundException;
+import no.experis.tbbackend.Exception.ResourceNotFoundException;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.repository.UserRepository;
-import no.experis.tbbackend.security.CurrentUser;
-import no.experis.tbbackend.security.UserPrincipal;
+import no.experis.tbbackend.Security.CurrentUser;
+import no.experis.tbbackend.Security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/user/me")
     public User getCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
         System.out.println("CALLING /USER/ME");
-        return  userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+        return userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 }
 
@@ -33,4 +33,4 @@ public class UserController {
  * userRepository.findById(userPrincipal.getId())
  *                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
  *
-*/
+ */

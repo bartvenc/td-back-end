@@ -1,21 +1,20 @@
-package no.experis.tbbackend.Repositories;
+package no.experis.tbbackend.repository;
 
 import no.experis.tbbackend.HibernateUtil;
-import no.experis.tbbackend.Models.IneligiblePeriod;
-import no.experis.tbbackend.Models.User;
+import no.experis.tbbackend.model.VacationRequestStatus;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class IneligiblePeriodRepo implements MainRepository<IneligiblePeriod> {
+public class VacationRequestStatusRepo implements MainRepository<VacationRequestStatus> {
 
     @Override
-    public void save(IneligiblePeriod ineligiblePeriod) {
+    public void save(VacationRequestStatus vacationRequestStatus) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(ineligiblePeriod);
+            session.save(vacationRequestStatus);
 
             transaction.commit();
         } catch (Exception e) {
@@ -27,25 +26,25 @@ public class IneligiblePeriodRepo implements MainRepository<IneligiblePeriod> {
     }
 
     @Override
-    public List<IneligiblePeriod> findAll() {
+    public List<VacationRequestStatus> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from IneligiblePeriod", IneligiblePeriod.class).list();
+            return session.createQuery("from VacationRequestStatus", VacationRequestStatus.class).list();
         }
     }
 
     @Override
-    public IneligiblePeriod findById(int id) {
+    public VacationRequestStatus findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(IneligiblePeriod.class, id);
+            return session.get(VacationRequestStatus.class, id);
         }
     }
 
     @Override
-    public void update(IneligiblePeriod ineligiblePeriod) {
+    public void update(VacationRequestStatus vacationRequestStatus) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(ineligiblePeriod);
+            session.saveOrUpdate(vacationRequestStatus);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -56,11 +55,11 @@ public class IneligiblePeriodRepo implements MainRepository<IneligiblePeriod> {
     }
 
     @Override
-    public void delete(IneligiblePeriod ineligiblePeriod) {
+    public void delete(VacationRequestStatus vacationRequestStatus) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.delete(ineligiblePeriod);
+            session.delete(vacationRequestStatus);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

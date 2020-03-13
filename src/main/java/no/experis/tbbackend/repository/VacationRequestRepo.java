@@ -1,21 +1,20 @@
-package no.experis.tbbackend.Repositories;
+package no.experis.tbbackend.repository;
 
 import no.experis.tbbackend.HibernateUtil;
-import no.experis.tbbackend.Models.Comment;
-import no.experis.tbbackend.Models.User;
+import no.experis.tbbackend.model.VacationRequest;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class CommentRepo implements MainRepository<Comment> {
+public class VacationRequestRepo implements MainRepository<VacationRequest> {
 
     @Override
-    public void save(Comment comment) {
+    public void save(VacationRequest vacationRequest) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(comment);
+            session.save(vacationRequest);
 
             transaction.commit();
         } catch (Exception e) {
@@ -27,25 +26,25 @@ public class CommentRepo implements MainRepository<Comment> {
     }
 
     @Override
-    public List<Comment> findAll() {
+    public List<VacationRequest> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Comment", Comment.class).list();
+            return session.createQuery("from VacationRequest", VacationRequest.class).list();
         }
     }
 
     @Override
-    public Comment findById(int id) {
+    public VacationRequest findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Comment.class, id);
+            return session.get(VacationRequest.class, id);
         }
     }
 
     @Override
-    public void update(Comment comment) {
+    public void update(VacationRequest vacationRequest) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(comment);
+            session.saveOrUpdate(vacationRequest);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -56,11 +55,11 @@ public class CommentRepo implements MainRepository<Comment> {
     }
 
     @Override
-    public void delete(Comment comment) {
+    public void delete(VacationRequest vacationRequest) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.delete(comment);
+            session.delete(vacationRequest);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -69,5 +68,4 @@ public class CommentRepo implements MainRepository<Comment> {
             e.printStackTrace();
         }
     }
-
 }

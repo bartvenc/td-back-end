@@ -1,4 +1,5 @@
-package no.experis.tbbackend.Models;
+package no.experis.tbbackend.model;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -23,8 +24,8 @@ public class VacationRequest {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name= "request_user",
-            joinColumns = @JoinColumn(name= "request_id"),
+            name = "request_user",
+            joinColumns = @JoinColumn(name = "request_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> owner;
@@ -101,3 +102,4 @@ public class VacationRequest {
     )
     private Set<User> moderator_id;
 }
+

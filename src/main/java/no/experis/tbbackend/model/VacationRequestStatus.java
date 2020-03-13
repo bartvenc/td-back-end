@@ -1,10 +1,10 @@
-package no.experis.tbbackend.Models;
+package no.experis.tbbackend.model;
+
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-
 
 
 @Entity
@@ -34,3 +34,4 @@ public class VacationRequestStatus {
         this.status = status;
     }
 }
+
