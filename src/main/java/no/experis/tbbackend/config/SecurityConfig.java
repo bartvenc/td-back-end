@@ -1,13 +1,13 @@
 package no.experis.tbbackend.config;
 
 
-import no.experis.tbbackend.Security.CustomUserDetailsService;
-import no.experis.tbbackend.Security.RestAuthenticationEntryPoint;
-import no.experis.tbbackend.Security.TokenAuthenticationFilter;
-import no.experis.tbbackend.Security.oauth2.CustomOAuth2UserService;
-import no.experis.tbbackend.Security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import no.experis.tbbackend.Security.oauth2.OAuth2AuthenticationFailureHandler;
-import no.experis.tbbackend.Security.oauth2.OAuth2AuthenticationSuccessHandler;
+import no.experis.tbbackend.security.CustomUserDetailsService;
+import no.experis.tbbackend.security.RestAuthenticationEntryPoint;
+import no.experis.tbbackend.security.TokenAuthenticationFilter;
+import no.experis.tbbackend.security.oauth2.CustomOAuth2UserService;
+import no.experis.tbbackend.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import no.experis.tbbackend.security.oauth2.OAuth2AuthenticationFailureHandler;
+import no.experis.tbbackend.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

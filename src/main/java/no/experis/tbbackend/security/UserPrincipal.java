@@ -1,4 +1,4 @@
-package no.experis.tbbackend.Security;
+package no.experis.tbbackend.security;
 
 
 import no.experis.tbbackend.model.User;

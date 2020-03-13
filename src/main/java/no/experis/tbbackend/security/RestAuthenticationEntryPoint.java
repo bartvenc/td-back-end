@@ -1,4 +1,4 @@
-package no.experis.tbbackend.Security;
+package no.experis.tbbackend.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

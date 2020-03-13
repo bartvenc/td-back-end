@@ -1,13 +1,13 @@
-package no.experis.tbbackend.Security.oauth2;
+package no.experis.tbbackend.security.oauth2;
 
 
-import no.experis.tbbackend.Exception.OAuth2AuthenticationProcessingException;
+import no.experis.tbbackend.exception.OAuth2AuthenticationProcessingException;
 import no.experis.tbbackend.model.AuthProvider;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.repository.UserRepository;
-import no.experis.tbbackend.Security.UserPrincipal;
-import no.experis.tbbackend.Security.oauth2.user.OAuth2UserInfo;
-import no.experis.tbbackend.Security.oauth2.user.OAuth2UserInfoFactory;
+import no.experis.tbbackend.security.UserPrincipal;
+import no.experis.tbbackend.security.oauth2.user.OAuth2UserInfo;
+import no.experis.tbbackend.security.oauth2.user.OAuth2UserInfoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;

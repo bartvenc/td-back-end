@@ -1,8 +1,8 @@
-package no.experis.tbbackend.Security.oauth2;
+package no.experis.tbbackend.security.oauth2;
 
 import no.experis.tbbackend.config.AppProperties;
-import no.experis.tbbackend.Exception.BadRequestException;
-import no.experis.tbbackend.Security.TokenProvider;
+import no.experis.tbbackend.exception.BadRequestException;
+import no.experis.tbbackend.security.TokenProvider;
 import no.experis.tbbackend.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
-import static no.experis.tbbackend.Security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static no.experis.tbbackend.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {

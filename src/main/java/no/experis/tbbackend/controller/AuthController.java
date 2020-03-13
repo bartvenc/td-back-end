@@ -1,8 +1,8 @@
 package no.experis.tbbackend.controller;
 
 
-import no.experis.tbbackend.Security.TokenProvider;
-import no.experis.tbbackend.Exception.BadRequestException;
+import no.experis.tbbackend.security.TokenProvider;
+import no.experis.tbbackend.exception.BadRequestException;
 import no.experis.tbbackend.model.AuthProvider;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.payload.ApiResponse;
@@ -10,7 +10,6 @@ import no.experis.tbbackend.payload.AuthResponse;
 import no.experis.tbbackend.payload.LoginRequest;
 import no.experis.tbbackend.payload.SignUpRequest;
 import no.experis.tbbackend.repository.UserRepository;
-import no.experis.tbbackend.Security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
