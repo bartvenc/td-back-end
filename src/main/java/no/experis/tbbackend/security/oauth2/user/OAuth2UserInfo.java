@@ -1,4 +1,4 @@
-package no.experis.tbbackend.Security.oauth2.user;
+package no.experis.tbbackend.security.oauth2.user;
 
 import java.util.Map;
 

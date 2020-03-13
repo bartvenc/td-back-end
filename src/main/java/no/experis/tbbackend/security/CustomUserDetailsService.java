@@ -1,7 +1,7 @@
-package no.experis.tbbackend.Security;
+package no.experis.tbbackend.security;
 
 
-import no.experis.tbbackend.Exception.ResourceNotFoundException;
+import no.experis.tbbackend.exception.ResourceNotFoundException;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

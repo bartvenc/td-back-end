@@ -1,4 +1,4 @@
-package no.experis.tbbackend.Security.oauth2;
+package no.experis.tbbackend.security.oauth2;
 
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
