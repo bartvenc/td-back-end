@@ -22,6 +22,14 @@ public class VacationRequest {
     private String period_start;
     private String period_end;
 
+    public VacationRequest(String title, String period_start, String period_end) {
+        this.title = title;
+        this.period_start = period_start;
+        this.period_end = period_end;
+
+    }
+
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "request_user",
@@ -44,6 +52,10 @@ public class VacationRequest {
 
     public void setRequest_id(int request_id) {
         this.request_id = request_id;
+    }
+
+    public void addRequest(VacationRequestStatus vacationRequestStatus) {
+        this.status.add(vacationRequestStatus);
     }
 
     public String getTitle() {
@@ -78,6 +90,10 @@ public class VacationRequest {
         this.owner = owner;
     }
 
+    public void addOwner(User owner) {
+        this.owner.add(owner);
+    }
+
     public Set<VacationRequestStatus> getStatus() {
         return status;
     }
@@ -92,6 +108,10 @@ public class VacationRequest {
 
     public void setModerator_id(Set<User> moderator_id) {
         this.moderator_id = moderator_id;
+    }
+
+    public void addModerator(User moderator) {
+        this.moderator_id.add(moderator);
     }
 
     @ManyToMany(cascade = CascadeType.ALL)

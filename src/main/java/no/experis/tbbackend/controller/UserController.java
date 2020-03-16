@@ -47,12 +47,12 @@ public class UserController {
     }
 
 
-    @GetMapping("admin/user/{ID}")
+    @GetMapping("admin/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String getUserAsAdmin(@CurrentUser UserPrincipal userPrincipal, @PathVariable Integer ID, HttpServletResponse response) throws IOException {
+    public String getUserAsAdmin(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling admin/user/{ID}");
         UserRepo userRepo = new UserRepo();
-        User returnUser = userRepo.findById(ID);
+        User returnUser = userRepository.findById(id);
         JSONObject object = new JSONObject();
         if (returnUser != null) {
 
@@ -69,11 +69,11 @@ public class UserController {
         return "User not found";
     }
 
-    @GetMapping("/user/{ID}")
-    public String getUserAsUser(@CurrentUser UserPrincipal userPrincipal, @PathVariable Integer ID, HttpServletResponse response) throws IOException {
+    @GetMapping("/user/{id}")
+    public String getUserAsUser(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling user/{ID}");
         UserRepo userRepo = new UserRepo();
-        User returnUser = userRepo.findById(ID);
+        User returnUser = userRepository.findById(id);
         JSONObject object = new JSONObject();
         if (returnUser != null) {
 
@@ -89,13 +89,13 @@ public class UserController {
         return "User not found";
     }
 
-    @GetMapping("/user/{ID}/requests")
-    public List<VacationRequest> getUserRequests(@CurrentUser UserPrincipal userPrincipal, @PathVariable Integer ID, HttpServletResponse response) throws IOException {
+    @GetMapping("/user/{id}/requests")
+    public List<VacationRequest> getUserRequests(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling /user/{ID}/requests  ");
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         UserRepo userRepo = new UserRepo();
         List<VacationRequest> vacationRequests = (List<VacationRequest>) new HashSet<VacationRequest>();
-        User returnUser = userRepo.findById(ID);
+        User returnUser = userRepository.findById(id);
         if (returnUser != null) {
             vacationRequests = vacationRequestRepo.findAllByUserID(returnUser.getId().intValue());
             if (vacationRequests != null) {

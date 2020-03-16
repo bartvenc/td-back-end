@@ -39,7 +39,7 @@ public class User {
 
     private String providerId;
 
-    public User(){
+    public User() {
         this.name = "null";
         this.admin = false;
         this.email = "null";
@@ -47,7 +47,7 @@ public class User {
         this.emailVerified = false;
     }
 
-    public User(String name, boolean admin, String imageUrl, boolean emailVerified){
+    public User(String name, boolean admin, String imageUrl, boolean emailVerified) {
         this.name = name;
         this.admin = admin;
         this.imageUrl = imageUrl;
