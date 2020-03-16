@@ -39,6 +39,21 @@ public class User {
 
     private String providerId;
 
+    public User(){
+        this.name = "null";
+        this.admin = false;
+        this.email = "null";
+        this.imageUrl = "null";
+        this.emailVerified = false;
+    }
+
+    public User(String name, boolean admin, String imageUrl, boolean emailVerified){
+        this.name = name;
+        this.admin = admin;
+        this.imageUrl = imageUrl;
+        this.emailVerified = emailVerified;
+    }
+
     public Long getId() {
         return id;
     }
@@ -110,4 +125,5 @@ public class User {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
+
 }
