@@ -18,9 +18,9 @@ public class HibernateUtil {
                 // Hibernate settings equivalent to hibernate.cfg.xml's properties
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "org.postgresql.Driver");
-                settings.put(Environment.URL, "jdbc:postgresql://ec2-34-206-252-187.compute-1.amazonaws.com:5432/dfpbfisca7nqil");
-                settings.put(Environment.USER, "cgjpjefxuznusc");
-                settings.put(Environment.PASS, "5f6f7f5537fe549e2c058c858e9de0b6e461b93b38adaf934e5dacf2c04707d8");
+                settings.put(Environment.URL, "jdbc:postgresql://ec2-3-223-21-106.compute-1.amazonaws.com:5432/deb47u8n0v5g1g");
+                settings.put(Environment.USER, "plhfiwgrqjhoba");
+                settings.put(Environment.PASS, "bd974e99a28e34bc6d7b51f02b741fe76bd755da7f72449ffaa7ebf32fda90f6");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
