@@ -94,7 +94,7 @@ public class UserController {
         System.out.println("calling /user/{ID}/requests  ");
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         UserRepo userRepo = new UserRepo();
-        List<VacationRequest> vacationRequests = (List<VacationRequest>) new HashSet<VacationRequest>();
+        List<VacationRequest> vacationRequests;
         User returnUser = userRepository.findById(id);
         if (returnUser != null) {
             vacationRequests = vacationRequestRepo.findAllByUserID(returnUser.getId().intValue());
