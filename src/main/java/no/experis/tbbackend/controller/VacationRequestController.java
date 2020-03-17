@@ -33,16 +33,18 @@ public class VacationRequestController {
         //VacationRequest vacationRequest1 = new VacationRequest(vacationRequest.getTitle(), vacationRequest.getPeriod_start(), vacationRequest.getPeriod_end());
 
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+
         vacationRequestRepo.save(vacationRequest);
+
         System.out.println("asdasdasdada " + vacationRequest.getRequest_id());
         vacationRequest.addOwner(requestUser);
-
+        vacationRequestRepo.update(vacationRequest);
         VacationRequestStatus vacationRequestStatus = new VacationRequestStatus();
         vacationRequestStatus.setStatus("Pending");
         VacationRequestStatusRepo vacationRequestStatusRepo = new VacationRequestStatusRepo();
-        vacationRequestStatusRepo.save(vacationRequestStatus);
+        vacationRequestStatusRepo.update(vacationRequestStatus);
         vacationRequest.addRequest(vacationRequestStatus);
-
+        vacationRequestRepo.update(vacationRequest);
 
         if (vacationRequest.getRequest_id() > 0) {
             return vacationRequest.getRequest_id();

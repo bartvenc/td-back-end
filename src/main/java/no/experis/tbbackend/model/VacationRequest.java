@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 @Entity
-@Table(name = "VacationRequests")
+@Table(name = "vacation_requests")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "request_id")
@@ -26,9 +28,11 @@ public class VacationRequest {
         this.title = title;
         this.period_start = period_start;
         this.period_end = period_end;
+        this.owner = new HashSet<User>();
+        this.moderator_id = new HashSet<User>();
+        this.status = new HashSet<VacationRequestStatus>();
 
     }
-
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
