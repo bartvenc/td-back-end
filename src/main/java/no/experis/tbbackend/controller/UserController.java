@@ -10,7 +10,6 @@ import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.security.CurrentUser;
 import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,19 +40,19 @@ public class UserController {
         return userRepository.findByEmail(userPrincipal.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-
     @GetMapping("/user/me")
     public User getCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
         System.out.println("CALLING /USER/ME");
         return userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-    @GetMapping("admin/user/{ID}")
+
+    @GetMapping("admin/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String getUserAsAdmin(@CurrentUser UserPrincipal userPrincipal, @PathVariable Integer ID, HttpServletResponse response) throws IOException {
+    public String getUserAsAdmin(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling admin/user/{ID}");
         UserRepo userRepo = new UserRepo();
-        User returnUser = userRepo.findById(ID);
+        User returnUser = userRepository.findById(id);
         JSONObject object = new JSONObject();
         if (returnUser != null) {
 
@@ -70,11 +69,11 @@ public class UserController {
         return "User not found";
     }
 
-    @GetMapping("/user/{ID}")
-    public String getUserAsUser(@CurrentUser UserPrincipal userPrincipal, @PathVariable Integer ID, HttpServletResponse response) throws IOException {
+    @GetMapping("/user/{id}")
+    public String getUserAsUser(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling user/{ID}");
         UserRepo userRepo = new UserRepo();
-        User returnUser = userRepo.findById(ID);
+        User returnUser = userRepository.findById(id);
         JSONObject object = new JSONObject();
         if (returnUser != null) {
 
@@ -90,13 +89,13 @@ public class UserController {
         return "User not found";
     }
 
-    @GetMapping("/user/{ID}/requests")
-    public List<VacationRequest> getUserRequests(@CurrentUser UserPrincipal userPrincipal, @PathVariable Integer ID, HttpServletResponse response) throws IOException {
+    @GetMapping("/user/{id}/requests")
+    public List<VacationRequest> getUserRequests(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling /user/{ID}/requests  ");
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         UserRepo userRepo = new UserRepo();
         List<VacationRequest> vacationRequests = (List<VacationRequest>) new HashSet<VacationRequest>();
-        User returnUser = userRepo.findById(ID);
+        User returnUser = userRepository.findById(id);
         if (returnUser != null) {
             vacationRequests = vacationRequestRepo.findAllByUserID(returnUser.getId().intValue());
             if (vacationRequests != null) {
@@ -111,5 +110,7 @@ public class UserController {
             return null;
         }
     }
+
+
 }
 
