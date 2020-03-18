@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 public class VacationRequestController {
@@ -25,12 +26,18 @@ public class VacationRequestController {
     private UserRepository userRepository;
 
 
+/*
+    @GetMapping("/request")
+    public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal,  HttpServletResponse response){
+
+    }
+*/
+
+
     @PostMapping("/request")
     public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest, HttpServletResponse response) {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
-
-        //VacationRequest vacationRequest1 = new VacationRequest(vacationRequest.getTitle(), vacationRequest.getPeriod_start(), vacationRequest.getPeriod_end());
 
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
 
@@ -39,10 +46,12 @@ public class VacationRequestController {
         System.out.println("asdasdasdada " + vacationRequest.getRequest_id());
         vacationRequest.addOwner(requestUser);
         vacationRequestRepo.update(vacationRequest);
+
         VacationRequestStatus vacationRequestStatus = new VacationRequestStatus();
         vacationRequestStatus.setStatus("Pending");
         VacationRequestStatusRepo vacationRequestStatusRepo = new VacationRequestStatusRepo();
-        vacationRequestStatusRepo.update(vacationRequestStatus);
+        vacationRequestStatusRepo.save(vacationRequestStatus);
+
         vacationRequest.addRequest(vacationRequestStatus);
         vacationRequestRepo.update(vacationRequest);
 
@@ -51,6 +60,7 @@ public class VacationRequestController {
         } else {
             return -1;
         }
-
     }
+
+
 }

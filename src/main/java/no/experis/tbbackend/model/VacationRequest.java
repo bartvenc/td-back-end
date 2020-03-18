@@ -24,6 +24,15 @@ public class VacationRequest {
     private String period_start;
     private String period_end;
 
+    public VacationRequest() {
+        this.title = "null";
+        this.period_start = "null";
+        this.period_end = "null";
+        this.owner = new HashSet<User>();
+        this.moderator_id = new HashSet<User>();
+        this.status = new HashSet<VacationRequestStatus>();
+    }
+
     public VacationRequest(String title, String period_start, String period_end) {
         this.title = title;
         this.period_start = period_start;
@@ -34,16 +43,7 @@ public class VacationRequest {
 
     }
 
-    public VacationRequest(){
-        this.title = "null";
-        this.period_start = null;
-        this.period_end = null;
-        this.owner = null;
-        this.moderator_id = null;
-        this.status = null;
-    }
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_user",
             joinColumns = @JoinColumn(name = "request_id"),
@@ -51,7 +51,7 @@ public class VacationRequest {
     )
     private Set<User> owner;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_state",
             joinColumns = @JoinColumn(name = "request_id"),
@@ -127,7 +127,7 @@ public class VacationRequest {
         this.moderator_id.add(moderator);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_moderator",
             joinColumns = @JoinColumn(name = "request_id"),

@@ -4,7 +4,6 @@ import no.experis.tbbackend.HibernateUtil;
 import no.experis.tbbackend.model.VacationRequest;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -29,18 +28,18 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
     @Override
     public List<VacationRequest> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from VacationRequest", VacationRequest.class).list();
+            return session.createQuery("from VacationRequest").list();
         }
     }
 
-    // @Override
-    public List<VacationRequest> findAllByUserID(int id) {
+
+    public List findAllByUserID(long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                return session.createQuery("FROM VacationRequest vr, request_user r WHERE vr.request_id = r.request_id AND r.user_id = id", VacationRequest.class).list();
-            }
+            List list = session.createSQLQuery("SELECT v.* FROM vacation_requests v JOIN request_user vr ON v.request_id = vr.request_id JOIN users u ON vr.user_id = u.id WHERE vr.user_id = ?1").setParameter(1, id).getResultList();
+            return list;
+        }
     }
 
-    @Override
     public VacationRequest findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(VacationRequest.class, id);
