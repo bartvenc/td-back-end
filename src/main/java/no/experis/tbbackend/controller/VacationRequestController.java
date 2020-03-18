@@ -119,5 +119,28 @@ public class VacationRequestController {
         return "Worked";
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/request/{vr_ID}")
+    public VacationRequest getVacationRequestByID(@PathVariable int vr_ID, @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
+        long id = userPrincipal.getId();
+
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        VacationRequestStatusRepo vacationRequestStatusRepo = new VacationRequestStatusRepo();
+
+        User requestUser = userRepository.findById(id);
+
+        VacationRequest returnVacation = vacationRequestRepo.findById(vr_ID);
+        VacationRequestStatus requestStatus = vacationRequestStatusRepo.findById(returnVacation.getStatus().iterator().next().getStatus_id());
+
+        if ((requestUser.getId() != returnVacation.getOwner().iterator().next().getId()) ||
+                (!requestStatus.getStatus().equals("Approved"))) {
+            response.sendError(403);
+            return null;
+        } else {
+            response.setStatus(200);
+            return returnVacation;
+        }
+
+    }
 
 }
