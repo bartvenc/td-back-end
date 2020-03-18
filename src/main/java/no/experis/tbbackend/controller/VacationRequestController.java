@@ -143,4 +143,20 @@ public class VacationRequestController {
 
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("admin/request/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public VacationRequest getVacationRequestByIdAsAdmin(@CurrentUser UserPrincipal userPrincipal, @PathVariable int id, HttpServletResponse response) throws IOException {
+        System.out.println("inside /admin/request/{id}/");
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        VacationRequest returnVacation = vacationRequestRepo.findById(id);
+        if (returnVacation != null) {
+            return returnVacation;
+        } else {
+            response.sendError(400, "vacation request not found");
+            return null;
+        }
+    }
+
+
 }
