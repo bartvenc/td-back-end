@@ -26,16 +26,11 @@ public class VacationRequestController {
     private UserRepository userRepository;
 
 
-/*
-    @GetMapping("/request")
-    public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal,  HttpServletResponse response){
 
-    }
-*/
 
 
     @PostMapping("/request")
-    public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest, HttpServletResponse response) {
+    public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest) {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
 
