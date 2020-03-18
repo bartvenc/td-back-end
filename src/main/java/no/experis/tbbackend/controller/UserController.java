@@ -11,10 +11,7 @@ import no.experis.tbbackend.security.CurrentUser;
 import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,12 +24,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @CrossOrigin(origins="*", allowedHeaders="*")
     @GetMapping("/user")
     public String getCurrentUserProfile(@CurrentUser UserPrincipal userPrincipal) {
         System.out.println("/USER");
         return "http://localhost:8080/user" + userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
+    @CrossOrigin(origins="*", allowedHeaders="*")
     @GetMapping("/admin/me")
     @PreAuthorize("hasRole('ADMIN')")
     public User getAdminCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
@@ -40,13 +39,14 @@ public class UserController {
         return userRepository.findByEmail(userPrincipal.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
+    @CrossOrigin(origins="*", allowedHeaders="*")
     @GetMapping("/user/me")
     public User getCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
         System.out.println("CALLING /USER/ME");
         return userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-
+    @CrossOrigin(origins="*", allowedHeaders="*")
     @GetMapping("admin/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String getUserAsAdmin(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
@@ -69,6 +69,7 @@ public class UserController {
         return "User not found";
     }
 
+    @CrossOrigin(origins="*", allowedHeaders="*")
     @GetMapping("/user/{id}")
     public String getUserAsUser(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling user/{ID}");
@@ -89,6 +90,7 @@ public class UserController {
         return "User not found";
     }
 
+    @CrossOrigin(origins="*", allowedHeaders="*")
     @GetMapping("/user/{id}/requests")
     public List<VacationRequest> getUserRequests(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling /user/{ID}/requests  ");
