@@ -34,17 +34,9 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
         }
     }
 
-
     public List findAllByUserID(long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<VacationRequest> list = session.createSQLQuery("SELECT v.* FROM vacation_requests v JOIN request_user vr ON v.request_id = vr.request_id JOIN users u ON vr.user_id = u.id WHERE vr.user_id = ?1").setParameter(1, id).addEntity(VacationRequest.class).getResultList();
-            return list;
-        }
-    }
-
-    public List findAllAproved() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List list = session.createSQLQuery("SELECT v.* FROM vacation_requests v JOIN request_state vr ON v.request_id = vr.request_id JOIN vacation_request_status u ON vr.status_id = u.status_id WHERE u.status = 'Approved'").addEntity(VacationRequest.class).getResultList();
             return list;
         }
     }

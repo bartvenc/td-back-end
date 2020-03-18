@@ -1,6 +1,7 @@
 package no.experis.tbbackend.controller;
 
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
 import no.experis.tbbackend.model.VacationRequestStatus;
@@ -13,10 +14,7 @@ import org.assertj.core.util.Lists;
 import org.assertj.core.util.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,7 +27,7 @@ public class VacationRequestController {
     @Autowired
     private UserRepository userRepository;
 
-
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/request")
     @PreAuthorize("hasRole('ADMIN')")
     public List<VacationRequest> getAllVacationRequest(HttpServletResponse response) throws IOException {
@@ -44,6 +42,7 @@ public class VacationRequestController {
         return returnVacationRequests;
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request")
     public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) {
         long id = userPrincipal.getId();
@@ -90,4 +89,35 @@ public class VacationRequestController {
             return -1;
         }
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PatchMapping("/admin/request/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String editRequest(@PathVariable int id, @RequestBody String status) {
+        System.out.println("EDIT STATUS");
+        System.out.println("STATUS " + status);
+
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        VacationRequestStatusRepo vacationRequestStatusRepo = new VacationRequestStatusRepo();
+
+        VacationRequest editVacation = vacationRequestRepo.findById(id);
+        VacationRequestStatus requestStatus = vacationRequestStatusRepo.findById(editVacation.getStatus().iterator().next().getStatus_id());
+
+        System.out.println("REQUESTSTATUS WITH ID" + requestStatus.getStatus_id() + " " + requestStatus.getStatus());
+        String gotStatus = status.toString();
+        System.out.println("SETTING THIS VALUE TO STATUS " + gotStatus);
+        requestStatus.setStatus(gotStatus);
+        System.out.println("EDITEDREQUESTSTATUS " + requestStatus.getStatus());
+
+        vacationRequestRepo.update(editVacation);
+        System.out.println("From updated vacatio repo " + vacationRequestRepo.findById(editVacation.getRequest_id()).getStatus().iterator().next().getStatus());
+
+        vacationRequestStatusRepo.update(requestStatus);
+        System.out.println("updated request status from repo " + vacationRequestStatusRepo.findById(editVacation.getStatus().iterator().next().getStatus_id()).getStatus());
+
+
+        return "Worked";
+    }
+
+
 }
