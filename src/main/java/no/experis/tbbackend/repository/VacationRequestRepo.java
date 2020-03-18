@@ -55,6 +55,13 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
         }
     }
 
+    public List findAllAproved() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List list = session.createSQLQuery("SELECT v.* FROM vacation_requests v JOIN request_state vr ON v.request_id = vr.request_id JOIN vacation_request_status u ON vr.status_id = u.status_id WHERE u.status = 'Approved'").addEntity(VacationRequest.class).getResultList();
+            return list;
+        }
+    }
+
     @Override
     public void update(VacationRequest vacationRequest) {
         Transaction transaction = null;

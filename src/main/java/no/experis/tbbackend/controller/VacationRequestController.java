@@ -62,8 +62,9 @@ public class VacationRequestController {
         return vacationRequests;
     }
 
+    @CrossOrigin(origins="*", allowedHeaders="*")
     @PostMapping("/request")
-    public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest, HttpServletResponse response) {
+    public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest) {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
 
@@ -89,6 +90,4 @@ public class VacationRequestController {
             return -1;
         }
     }
-
-
 }

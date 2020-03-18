@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -28,9 +29,9 @@ public class VacationRequest {
         this.title = "null";
         this.period_start = "null";
         this.period_end = "null";
-        this.owner = new HashSet<User>();
-        this.moderator_id = new HashSet<User>();
-        this.status = new HashSet<VacationRequestStatus>();
+        this.owner = new HashSet<>();
+        this.moderator_id = new HashSet<>();
+        this.status = new HashSet<>();
     }
 
     public VacationRequest(String title, String period_start, String period_end) {
