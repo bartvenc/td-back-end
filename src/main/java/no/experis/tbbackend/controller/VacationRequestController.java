@@ -9,38 +9,58 @@ import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.repository.VacationRequestStatusRepo;
 import no.experis.tbbackend.security.CurrentUser;
 import no.experis.tbbackend.security.UserPrincipal;
+import org.assertj.core.util.Lists;
+import org.assertj.core.util.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class VacationRequestController {
 
-
     @Autowired
     private UserRepository userRepository;
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+
+    @GetMapping("/admin/request")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<VacationRequest> getAllVacationRequest(HttpServletResponse response) throws IOException {
+
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        List<VacationRequest> returnVacationRequests = vacationRequestRepo.findAll();
+        if (returnVacationRequests.isEmpty()) {
+            response.sendError(400, "No vacation request were found");
+        } else {
+            response.setStatus(200);
+        }
+        return returnVacationRequests;
+    }
+
     @GetMapping("/request")
-    public Set<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal,  HttpServletResponse response){
+    public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) {
         long id = userPrincipal.getId();
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         User requestUser = userRepository.findById(id);
         List<VacationRequest> vacationRequests;
 
         vacationRequests = vacationRequestRepo.findAllByUserID(requestUser.getId().intValue());
-        Set<VacationRequest> uniqueSet = new HashSet<VacationRequest>(vacationRequests);
-        List<VacationRequest> approvedVacationRequests = vacationRequestRepo.findAllAproved();
-        uniqueSet.addAll(approvedVacationRequests);
-        //vacationRequests.addAll(approvedVacationRequests);
 
-        return uniqueSet;
+        List<VacationRequest> appprovedVacationRequests = vacationRequestRepo.findAllAproved();
+
+        vacationRequests.addAll(appprovedVacationRequests);
+
+        HashSet<Object> seen = new HashSet<>();
+        vacationRequests.removeIf(e -> !seen.add(e.getRequest_id()));
+        return vacationRequests;
     }
-
 
     @CrossOrigin(origins="*", allowedHeaders="*")
     @PostMapping("/request")
