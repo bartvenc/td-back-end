@@ -9,6 +9,7 @@ public interface MainRepository<T> {
 
     public T findById(int id);
 
+    //public List<T> findAllByUserID(int id);
     public void delete(T entity);
 
     public List<T> findAll();

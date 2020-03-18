@@ -1,15 +1,11 @@
 package no.experis.tbbackend.repository;
 
 import no.experis.tbbackend.HibernateUtil;
-import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class VacationRequestRepo implements MainRepository<VacationRequest> {
 
@@ -36,26 +32,14 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
         }
     }
 
-    // @Override
 
-    public List<VacationRequest> findAllByUserID(int id) {
+    public List findAllByUserID(long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM VacationRequest ";
-            Query query = session.createQuery(hql);
-            List<VacationRequest> lol = new ArrayList<>();
-            List<VacationRequest> results = query.list();
-            System.out.println("query size " + results.size());
-            for (VacationRequest vacationRequest : results) {
-                //System.out.println("asdasdasdasd" + vacationRequest.getOwner().size());
-                if ((vacationRequest.getOwner().iterator().next().getId() == id)) {
-                    lol.add(vacationRequest);
-                }
-            }
-            return lol;
+            List list = session.createSQLQuery("SELECT v.* FROM vacation_requests v JOIN request_user vr ON v.request_id = vr.request_id JOIN users u ON vr.user_id = u.id WHERE vr.user_id = ?1").setParameter(1, id).getResultList();
+            return list;
         }
     }
 
-    @Override
     public VacationRequest findById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(VacationRequest.class, id);
