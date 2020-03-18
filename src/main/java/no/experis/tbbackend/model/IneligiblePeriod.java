@@ -9,7 +9,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "IneligiblePeriods")
+@Table(name = "ineligible_periods")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "ip_id")

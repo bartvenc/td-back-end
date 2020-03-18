@@ -25,9 +25,9 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    private String imageUrl;
+    private String image_Url;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "email_verified")
     private Boolean emailVerified = false;
 
     @JsonIgnore
@@ -37,7 +37,22 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
-    private String providerId;
+    private String provider_Id;
+
+    public User() {
+        this.name = "null";
+        this.admin = false;
+        this.email = "null";
+        this.image_Url = "null";
+        this.emailVerified = false;
+    }
+
+    public User(String name, boolean admin, String image_Url, boolean emailVerified) {
+        this.name = name;
+        this.admin = admin;
+        this.image_Url = image_Url;
+        this.emailVerified = emailVerified;
+    }
 
     public Long getId() {
         return id;
@@ -64,11 +79,11 @@ public class User {
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return image_Url;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl(String image_Url) {
+        this.image_Url = image_Url;
     }
 
     public Boolean getEmailVerified() {
@@ -96,11 +111,11 @@ public class User {
     }
 
     public String getProviderId() {
-        return providerId;
+        return provider_Id;
     }
 
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
+    public void setProviderId(String provider_Id) {
+        this.provider_Id = provider_Id;
     }
 
     public boolean isAdmin() {
@@ -110,4 +125,5 @@ public class User {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
+
 }

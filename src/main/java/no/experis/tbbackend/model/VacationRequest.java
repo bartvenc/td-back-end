@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
 @Entity
-@Table(name = "VacationRequests")
+@Table(name = "vacation_requests")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "request_id")
@@ -22,7 +25,26 @@ public class VacationRequest {
     private String period_start;
     private String period_end;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    public VacationRequest() {
+        this.title = "null";
+        this.period_start = "null";
+        this.period_end = "null";
+        this.owner = new HashSet<>();
+        this.moderator_id = new HashSet<>();
+        this.status = new HashSet<>();
+    }
+
+    public VacationRequest(String title, String period_start, String period_end) {
+        this.title = title;
+        this.period_start = period_start;
+        this.period_end = period_end;
+        this.owner = new HashSet<User>();
+        this.moderator_id = new HashSet<User>();
+        this.status = new HashSet<VacationRequestStatus>();
+
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_user",
             joinColumns = @JoinColumn(name = "request_id"),
@@ -30,7 +52,7 @@ public class VacationRequest {
     )
     private Set<User> owner;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_state",
             joinColumns = @JoinColumn(name = "request_id"),
@@ -44,6 +66,10 @@ public class VacationRequest {
 
     public void setRequest_id(int request_id) {
         this.request_id = request_id;
+    }
+
+    public void addRequest(VacationRequestStatus vacationRequestStatus) {
+        this.status.add(vacationRequestStatus);
     }
 
     public String getTitle() {
@@ -78,6 +104,10 @@ public class VacationRequest {
         this.owner = owner;
     }
 
+    public void addOwner(User owner) {
+        this.owner.add(owner);
+    }
+
     public Set<VacationRequestStatus> getStatus() {
         return status;
     }
@@ -94,7 +124,11 @@ public class VacationRequest {
         this.moderator_id = moderator_id;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    public void addModerator(User moderator) {
+        this.moderator_id.add(moderator);
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_moderator",
             joinColumns = @JoinColumn(name = "request_id"),

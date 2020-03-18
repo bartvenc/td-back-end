@@ -31,7 +31,7 @@ public class Comment {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "vacationRequest_comments",
+            name = "vacation_request_comments",
             joinColumns = @JoinColumn(name = "comment_id"),
             inverseJoinColumns = @JoinColumn(name = "request_id")
     )
