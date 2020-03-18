@@ -19,7 +19,7 @@ spring:
           google:
             clientId: 519435970083-r9oa6c8hnft92eb0sanoqvrp5fnp06j0.apps.googleusercontent.com
             clientSecret: zI11pSBVj70_BldRbmqwMzjt
-            redirectUri: "http://infinite-tundra-25891.herokuapp.com/oauth2/callback/google"
+            redirectUri: "http://localhost:8080/oauth2/callback/google"
             scope:
               - email
               - profile
@@ -33,6 +33,6 @@ app:
     # redirectUri mentioned by the frontend client in the /oauth2/authorize request.
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
-      - http://enigmatic-escarpment-71409.herokuapp.com//oauth2/redirect
+      - http://localhost:3000/oauth2/redirect
       - myandroidapp://oauth2/redirect
       - myiosapp://oauth2/redirect

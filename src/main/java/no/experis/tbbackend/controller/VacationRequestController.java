@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class VacationRequestController {
@@ -22,7 +24,22 @@ public class VacationRequestController {
     @Autowired
     private UserRepository userRepository;
 
+    @CrossOrigin(origins="*", allowedHeaders="*")
+    @GetMapping("/request")
+    public Set<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal,  HttpServletResponse response){
+        long id = userPrincipal.getId();
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        User requestUser = userRepository.findById(id);
+        List<VacationRequest> vacationRequests;
 
+        vacationRequests = vacationRequestRepo.findAllByUserID(requestUser.getId().intValue());
+        Set<VacationRequest> uniqueSet = new HashSet<VacationRequest>(vacationRequests);
+        List<VacationRequest> approvedVacationRequests = vacationRequestRepo.findAllAproved();
+        uniqueSet.addAll(approvedVacationRequests);
+        //vacationRequests.addAll(approvedVacationRequests);
+
+        return uniqueSet;
+    }
 
 
     @CrossOrigin(origins="*", allowedHeaders="*")
@@ -53,6 +70,4 @@ public class VacationRequestController {
             return -1;
         }
     }
-
-
 }
