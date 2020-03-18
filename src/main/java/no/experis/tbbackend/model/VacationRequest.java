@@ -34,6 +34,15 @@ public class VacationRequest {
 
     }
 
+    public VacationRequest(){
+        this.title = "null";
+        this.period_start = null;
+        this.period_end = null;
+        this.owner = null;
+        this.moderator_id = null;
+        this.status = null;
+    }
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "request_user",
