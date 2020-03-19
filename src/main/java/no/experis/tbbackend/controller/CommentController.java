@@ -9,6 +9,7 @@ import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.security.CurrentUser;
 import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +49,28 @@ public class CommentController {
             response.sendError(403);
             return null;
         }
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping("admin/request/{r_id}/comment")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Comment addCommentToVacationRequestAsAdmin(@PathVariable int r_id, @RequestBody Comment comment, @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) {
+        long id = userPrincipal.getId();
+        User requestUser = userRepository.findById(id);
+
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        CommentRepo commentRepo = new CommentRepo();
+
+        VacationRequest editVacation = vacationRequestRepo.findById(r_id);
+        commentRepo.save(comment);
+        editVacation.addComment(comment);
+        vacationRequestRepo.update(editVacation);
+
+        comment.addUser(requestUser);
+        commentRepo.update(comment);
+        response.setStatus(200);
+        return comment;
+
 
     }
 }
