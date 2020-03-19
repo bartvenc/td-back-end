@@ -2,10 +2,12 @@ package no.experis.tbbackend.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +22,17 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int comment_id;
     private String message;
+    private String datetimestamp;
+    @JsonIgnore
+    private Date date;
+
+    public String getDatetimestamp() {
+        return datetimestamp;
+    }
+
+    public void setDatetimestamp(String datetimestamp) {
+        this.datetimestamp = datetimestamp;
+    }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -29,8 +42,18 @@ public class Comment {
     )
     private Set<User> user;
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Comment() {
         this.message = "null";
+        this.datetimestamp = "null";
+        this.date = null;
         this.user = new HashSet<>();
     }
 

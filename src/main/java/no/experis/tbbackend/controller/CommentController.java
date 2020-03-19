@@ -15,11 +15,50 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 public class CommentController {
     @Autowired
     private UserRepository userRepository;
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/request/{r_id}/comment")
+    public List<Comment> getAllCommentsFromRequest(@PathVariable int r_id,
+                                                   @CurrentUser UserPrincipal userPrincipal,
+                                                   HttpServletResponse response) throws IOException {
+
+        long id = userPrincipal.getId();
+        User requestUser = userRepository.findById(id);
+
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        CommentRepo commentRepo = new CommentRepo();
+
+        VacationRequest editVacation = vacationRequestRepo.findById(r_id);
+
+
+        if ((requestUser.getId() == editVacation.getOwner().iterator().next().getId())) {
+            List<Comment> returnComments = new ArrayList<>(editVacation.getComment());
+
+            Collections.sort(returnComments, new Comparator<Comment>() {
+                public int compare(Comment o1, Comment o2) {
+                    if (o1.getDate() == null || o2.getDate() == null)
+                        return 0;
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
+
+            return returnComments;
+        } else {
+            response.sendError(403, "Forbidden");
+            return null;
+        }
+
+    }
+
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/request/{r_id}/comment")
@@ -33,21 +72,23 @@ public class CommentController {
         CommentRepo commentRepo = new CommentRepo();
 
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
-        Comment newComment = new Comment(comment.getMessage());
+        //Comment newComment = new Comment(comment.getMessage(), comment.getDatetimestamp());
 
         if ((requestUser.getId() == editVacation.getOwner().iterator().next().getId())) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            comment.setDatetimestamp(sdf.format(timestamp).toString());
+            comment.setDate(new Date(System.currentTimeMillis()));
+            commentRepo.save(comment);
 
-            commentRepo.save(newComment);
-
-            editVacation.addComment(newComment);
+            editVacation.addComment(comment);
             System.out.println("new comment " + editVacation.getComment().iterator().next().getMessage());
 
             vacationRequestRepo.update(editVacation);
-            Comment newnewComment = commentRepo.findById(newComment.getComment_id());
-            newnewComment.addUser(requestUser);
-            commentRepo.update(newnewComment);
+            //Comment newnewComment = commentRepo.findById(comment.getComment_id());
+            comment.addUser(requestUser);
+            commentRepo.update(comment);
             response.setStatus(200);
-            return newnewComment;
+            return comment;
         } else {
             response.sendError(403);
             return null;
@@ -66,6 +107,10 @@ public class CommentController {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         CommentRepo commentRepo = new CommentRepo();
 
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        comment.setDatetimestamp(sdf.format(timestamp).toString());
+        comment.setDate(new Date(System.currentTimeMillis()));
+
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
         commentRepo.save(comment);
         editVacation.addComment(comment);
@@ -75,7 +120,6 @@ public class CommentController {
         commentRepo.update(comment);
         response.setStatus(200);
         return comment;
-
     }
 
 
@@ -91,9 +135,7 @@ public class CommentController {
         Comment comment = commentRepo.findById(c_id);
         response.setStatus(200);
         return comment;
-
     }
-
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request/{r_id}/comment/{c_id}")
