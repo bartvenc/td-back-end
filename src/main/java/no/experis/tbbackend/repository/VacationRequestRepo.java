@@ -54,6 +54,24 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
         }
     }
 
+    public void deleteRequest_State(long id,long userId){
+        System.out.println("HELLO DeleteRequest");
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+             session.createSQLQuery("DELETE FROM request_state where request_id = ?1 AND status_id = ?2").setParameter(1, id).setParameter(2, id+1).executeUpdate();
+             session.createSQLQuery("DELETE FROM vacation_request_status where status_id = ?1").setParameter(1, id+1).executeUpdate();
+            session.createSQLQuery("DELETE FROM request_user where request_id = ?1 and user_id = ?2").setParameter(1, id).setParameter(2, userId).executeUpdate();
+            session.createSQLQuery("DELETE FROM vacation_requests where request_id = ?1").setParameter(1, id).executeUpdate();
+             transaction.commit();
+        }catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void update(VacationRequest vacationRequest) {
         Transaction transaction = null;

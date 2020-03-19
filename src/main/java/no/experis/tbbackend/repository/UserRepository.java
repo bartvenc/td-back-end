@@ -3,7 +3,7 @@ package no.experis.tbbackend.repository;
 
 import no.experis.tbbackend.HibernateUtil;
 import no.experis.tbbackend.model.User;
-import org.hibernate.Session;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

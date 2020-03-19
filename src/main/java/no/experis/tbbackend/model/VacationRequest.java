@@ -2,11 +2,11 @@ package no.experis.tbbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 
@@ -38,13 +38,14 @@ public class VacationRequest {
         this.title = title;
         this.period_start = period_start;
         this.period_end = period_end;
-        this.owner = new HashSet<User>();
-        this.moderator_id = new HashSet<User>();
-        this.status = new HashSet<VacationRequestStatus>();
+        this.owner = new HashSet<>();
+        this.moderator_id = new HashSet<>();
+        this.status = new HashSet<>();
 
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_user",
             joinColumns = @JoinColumn(name = "request_id"),
@@ -52,7 +53,8 @@ public class VacationRequest {
     )
     private Set<User> owner;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_state",
             joinColumns = @JoinColumn(name = "request_id"),
@@ -128,7 +130,8 @@ public class VacationRequest {
         this.moderator_id.add(moderator);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "request_moderator",
             joinColumns = @JoinColumn(name = "request_id"),
