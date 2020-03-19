@@ -71,7 +71,7 @@ public class UserController {
             return object.toJSONString();
 
         }
-        response.sendError(200, "User not found");
+        response.sendError(400, "User not found");
         return "User not found";
     }
 
@@ -92,7 +92,7 @@ public class UserController {
             return object.toJSONString();
 
         }
-        response.sendError(200, "User not found");
+        response.sendError(400, "User not found");
         return "User not found";
     }
 
