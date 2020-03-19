@@ -42,6 +42,7 @@ public class VacationRequestController {
         return returnVacationRequests;
     }
 
+
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request")
     public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) {

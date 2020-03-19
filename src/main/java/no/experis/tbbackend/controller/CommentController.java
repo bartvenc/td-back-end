@@ -26,6 +26,30 @@ public class CommentController {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("admin/request/{r_id}/comment")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Comment> getAllCommentsFromRequestAsAdmin(@PathVariable int r_id,
+                                                          HttpServletResponse response) {
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        CommentRepo commentRepo = new CommentRepo();
+
+        VacationRequest editVacation = vacationRequestRepo.findById(r_id);
+        List<Comment> returnComments = new ArrayList<>(editVacation.getComment());
+
+        Collections.sort(returnComments, new Comparator<Comment>() {
+            public int compare(Comment o1, Comment o2) {
+                if (o1.getDate() == null || o2.getDate() == null)
+                    return 0;
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+
+        return returnComments;
+
+    }
+
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request/{r_id}/comment")
     public List<Comment> getAllCommentsFromRequest(@PathVariable int r_id,
                                                    @CurrentUser UserPrincipal userPrincipal,
