@@ -44,6 +44,7 @@ public class VacationRequestStatusRepo implements MainRepository<VacationRequest
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+
             session.saveOrUpdate(vacationRequestStatus);
             transaction.commit();
         } catch (Exception e) {
