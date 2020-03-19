@@ -25,6 +25,14 @@ public class VacationRequest {
     private String period_start;
     private String period_end;
 
+    public Set<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(Set<Comment> comment) {
+        this.comment = comment;
+    }
+
     public VacationRequest() {
         this.title = "null";
         this.period_start = "null";
@@ -32,6 +40,7 @@ public class VacationRequest {
         this.owner = new HashSet<>();
         this.moderator_id = new HashSet<>();
         this.status = new HashSet<>();
+        this.comment = new HashSet<>();
     }
 
     public VacationRequest(String title, String period_start, String period_end) {
@@ -41,7 +50,7 @@ public class VacationRequest {
         this.owner = new HashSet<User>();
         this.moderator_id = new HashSet<User>();
         this.status = new HashSet<VacationRequestStatus>();
-
+        this.comment = new HashSet<>();
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -59,6 +68,14 @@ public class VacationRequest {
             inverseJoinColumns = @JoinColumn(name = "status_id")
     )
     private Set<VacationRequestStatus> status;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "vacation_request_comments",
+            joinColumns = @JoinColumn(name = "request_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
+    private Set<Comment> comment;
 
     public int getRequest_id() {
         return request_id;
@@ -126,6 +143,10 @@ public class VacationRequest {
 
     public void addModerator(User moderator) {
         this.moderator_id.add(moderator);
+    }
+
+    public void addComment(Comment comment) {
+        this.comment.add(comment);
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -21,7 +21,7 @@ public class Comment {
     private int comment_id;
     private String message;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "comment_user",
             joinColumns = @JoinColumn(name = "comment_id"),
@@ -29,13 +29,18 @@ public class Comment {
     )
     private Set<User> user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "vacation_request_comments",
-            joinColumns = @JoinColumn(name = "comment_id"),
-            inverseJoinColumns = @JoinColumn(name = "request_id")
-    )
-    private Set<VacationRequest> vacationRequests;
+    public Comment() {
+        this.message = "null";
+        this.user = new HashSet<>();
+    }
+
+    public Comment(String message) {
+        this.message = message;
+        this.user = new HashSet<>();
+    }
+
+
+    // private Set<VacationRequest> vacationRequests;
 
     public int getComment_id() {
         return comment_id;
@@ -61,12 +66,16 @@ public class Comment {
         this.user = user;
     }
 
-    public Set<VacationRequest> getVacationRequests() {
+    public void addUser(User user) {
+        this.user.add(user);
+    }
+
+    /*public Set<VacationRequest> getVacationRequests() {
         return vacationRequests;
     }
 
     public void setVacationRequests(Set<VacationRequest> vacationRequests) {
         this.vacationRequests = vacationRequests;
-    }
+    }*/
 }
 
