@@ -11,6 +11,7 @@ import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,7 +23,9 @@ public class CommentController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/request/{r_id}/comment")
-    public Comment addCommentToVacationRequest(@PathVariable int r_id, @RequestBody Comment comment, @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
+    public Comment addCommentToVacationRequest(@PathVariable int r_id, @RequestBody Comment comment,
+                                               @CurrentUser UserPrincipal userPrincipal,
+                                               HttpServletResponse response) throws IOException {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
 
@@ -54,7 +57,9 @@ public class CommentController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("admin/request/{r_id}/comment")
     @PreAuthorize("hasRole('ADMIN')")
-    public Comment addCommentToVacationRequestAsAdmin(@PathVariable int r_id, @RequestBody Comment comment, @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) {
+    public Comment addCommentToVacationRequestAsAdmin(@PathVariable int r_id, @RequestBody Comment comment,
+                                                      @CurrentUser UserPrincipal userPrincipal,
+                                                      HttpServletResponse response) {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
 
@@ -71,6 +76,44 @@ public class CommentController {
         response.setStatus(200);
         return comment;
 
+    }
 
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("admin/request/{r_id}/comment/{c_id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Comment getRequestCommentByIDAsAdmin(@PathVariable int r_id, @PathVariable int c_id,
+                                                @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
+
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        CommentRepo commentRepo = new CommentRepo();
+
+        Comment comment = commentRepo.findById(c_id);
+        response.setStatus(200);
+        return comment;
+
+    }
+
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/request/{r_id}/comment/{c_id}")
+    public Comment getRequestCommentByID(@PathVariable int r_id, @PathVariable int c_id,
+                                         @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
+        long id = userPrincipal.getId();
+        User requestUser = userRepository.findById(id);
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        VacationRequest vacationRequest = vacationRequestRepo.findById(r_id);
+
+        CommentRepo commentRepo = new CommentRepo();
+
+
+        if ((requestUser.getId() != vacationRequest.getOwner().iterator().next().getId())) {
+            Comment comment = commentRepo.findById(c_id);
+            response.setStatus(200);
+            return comment;
+        } else {
+            response.sendError(403, "Forbidden");
+            return null;
+        }
     }
 }
