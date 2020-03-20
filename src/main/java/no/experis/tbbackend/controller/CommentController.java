@@ -29,21 +29,25 @@ public class CommentController {
     @GetMapping("admin/request/{r_id}/comment")
     @PreAuthorize("hasRole('ADMIN')")
     public List<Comment> getAllCommentsFromRequestAsAdmin(@PathVariable int r_id,
-                                                          HttpServletResponse response) {
+                                                          HttpServletResponse response) throws IOException {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         CommentRepo commentRepo = new CommentRepo();
-
+        List<Comment> returnComments = null;
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
-        List<Comment> returnComments = new ArrayList<>(editVacation.getComment());
+        if (editVacation != null) {
+            returnComments = new ArrayList<>(editVacation.getComment());
 
-        Collections.sort(returnComments, new Comparator<Comment>() {
-            public int compare(Comment o1, Comment o2) {
-                if (o1.getDate() == null || o2.getDate() == null)
-                    return 0;
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
-
+            Collections.sort(returnComments, new Comparator<Comment>() {
+                public int compare(Comment o1, Comment o2) {
+                    if (o1.getDate() == null || o2.getDate() == null)
+                        return 0;
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "VR not found");
+        }
         return returnComments;
 
     }
@@ -64,7 +68,7 @@ public class CommentController {
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
 
 
-        if ((requestUser.getId() == editVacation.getOwner().iterator().next().getId())) {
+        if ((requestUser.getId() == editVacation.getOwner().iterator().next().getId()) && editVacation != null) {
             List<Comment> returnComments = new ArrayList<>(editVacation.getComment());
 
             Collections.sort(returnComments, new Comparator<Comment>() {
