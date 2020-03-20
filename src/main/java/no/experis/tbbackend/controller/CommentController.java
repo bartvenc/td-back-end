@@ -11,7 +11,6 @@ import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -68,7 +67,7 @@ public class CommentController {
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
 
 
-        if ((requestUser.getId() == editVacation.getOwner().iterator().next().getId()) && editVacation != null) {
+        if (requestUser.getId() == editVacation.getOwner().iterator().next().getId()) {
             List<Comment> returnComments = new ArrayList<>(editVacation.getComment());
 
             Collections.sort(returnComments, new Comparator<Comment>() {
@@ -194,6 +193,26 @@ public class CommentController {
         } else {
             response.sendError(403, "Forbidden");
             return null;
+        }
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PatchMapping("/admin/request/{r_id}/comment/{c_id}")
+    public void deleteCommentByID(@PathVariable int r_id, @PathVariable int c_id,
+                                         @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
+        long id = userPrincipal.getId();
+        User requestUser = userRepository.findById(id);
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        VacationRequest vacationRequest = vacationRequestRepo.findById(r_id);
+        CommentRepo commentRepo = new CommentRepo();
+
+
+        if ((!requestUser.getId().equals(vacationRequest.getOwner().iterator().next().getId()))) {
+            Comment comment = commentRepo.findById(c_id);
+            vacationRequestRepo.deleteRequest_Comment(r_id,c_id);
+            commentRepo.deleteComment(r_id, c_id, comment.getUser().iterator().next().getId());
+        } else {
+            response.sendError(403, "Forbidden");
         }
     }
 }

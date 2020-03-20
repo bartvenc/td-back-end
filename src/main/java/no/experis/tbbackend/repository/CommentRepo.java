@@ -54,6 +54,26 @@ public class CommentRepo implements MainRepository<Comment> {
         }
     }
 
+    public void deleteComment(long r_id,long c_id, long u_id){
+        System.out.println("COMMENTID "+c_id);
+        System.out.println("USERID "+u_id);
+        System.out.println("REQUESTID "+r_id);
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.createSQLQuery("DELETE FROM comment_user where comment_id = ?1 AND user_id = ?2").setParameter(1, 3).setParameter(2, 2).executeUpdate();
+            session.createSQLQuery("DELETE FROM comments where comment_id = ?1").setParameter(1, 3).executeUpdate();
+            //session.createSQLQuery("DELETE FROM request_user where request_id = ?1 and user_id = ?2").setParameter(1, r_id).setParameter(2, c_id).executeUpdate();
+            //session.createSQLQuery("DELETE FROM vacation_requests where request_id = ?1").setParameter(1, r_id).executeUpdate();
+            transaction.commit();
+        }catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void delete(Comment comment) {
         Transaction transaction = null;

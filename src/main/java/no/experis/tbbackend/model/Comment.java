@@ -34,6 +34,7 @@ public class Comment {
         this.datetimestamp = datetimestamp;
     }
 
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "comment_user",
