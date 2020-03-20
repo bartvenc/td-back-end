@@ -34,15 +34,23 @@ public class IneligiblePeriodController {
         ineligiblePeriodRepo.save(ineligiblePeriod);
         ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.update(ineligiblePeriod);
+        response.setStatus(201);
         return ineligiblePeriod.getIp_id();
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/ineligible")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<IneligiblePeriod> getIP(HttpServletResponse response) {
+    public List<IneligiblePeriod> getIP(HttpServletResponse response) throws IOException {
+
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
-        return ineligiblePeriodRepo.findAll();
+        List<IneligiblePeriod> IPs = ineligiblePeriodRepo.findAll();
+        if (!IPs.isEmpty()) {
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "IP list is empty");
+        }
+        return IPs;
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

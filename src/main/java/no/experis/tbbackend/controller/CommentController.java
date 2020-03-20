@@ -128,7 +128,7 @@ public class CommentController {
     @PreAuthorize("hasRole('ADMIN')")
     public Comment addCommentToVacationRequestAsAdmin(@PathVariable int r_id, @RequestBody Comment comment,
                                                       @CurrentUser UserPrincipal userPrincipal,
-                                                      HttpServletResponse response) {
+                                                      HttpServletResponse response) throws IOException {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
 
@@ -140,13 +140,18 @@ public class CommentController {
         comment.setDate(new Date(System.currentTimeMillis()));
 
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
-        commentRepo.save(comment);
-        editVacation.addComment(comment);
-        vacationRequestRepo.update(editVacation);
+        if (editVacation != null) {
+            commentRepo.save(comment);
+            editVacation.addComment(comment);
+            vacationRequestRepo.update(editVacation);
 
-        comment.addUser(requestUser);
-        commentRepo.update(comment);
-        response.setStatus(200);
+            comment.addUser(requestUser);
+            commentRepo.update(comment);
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "Coud not find Vacation");
+        }
+
         return comment;
     }
 
@@ -161,7 +166,12 @@ public class CommentController {
         CommentRepo commentRepo = new CommentRepo();
 
         Comment comment = commentRepo.findById(c_id);
-        response.setStatus(200);
+        if (comment != null) {
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "Could not find comment");
+        }
+
         return comment;
     }
 
