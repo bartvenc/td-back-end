@@ -19,7 +19,7 @@ spring:
           google:
             clientId: 519435970083-r9oa6c8hnft92eb0sanoqvrp5fnp06j0.apps.googleusercontent.com
             clientSecret: zI11pSBVj70_BldRbmqwMzjt
-            redirectUri: "https://infinite-tundra-25891.herokuapp.com/oauth2/callback/google"
+            redirectUri: "https://case-db-production.herokuapp.com/oauth2/callback/google"
             scope:
               - email
               - profile
