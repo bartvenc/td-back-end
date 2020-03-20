@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 public class IneligiblePeriodController {
@@ -33,6 +34,14 @@ public class IneligiblePeriodController {
         ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.update(ineligiblePeriod);
         return ineligiblePeriod.getIp_id();
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/admin/ineligible")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<IneligiblePeriod> getIP(HttpServletResponse response) {
+        IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
+        return ineligiblePeriodRepo.findAll();
     }
 
 
