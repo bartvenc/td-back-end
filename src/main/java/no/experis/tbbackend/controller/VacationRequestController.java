@@ -41,7 +41,8 @@ public class VacationRequestController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request")
-    public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) {
+    public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal,
+                                                         HttpServletResponse response) throws IOException {
         long id = userPrincipal.getId();
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         User requestUser = userRepository.findById(id);
@@ -49,18 +50,25 @@ public class VacationRequestController {
 
         vacationRequests = vacationRequestRepo.findAllByUserID(requestUser.getId().intValue());
 
-        List<VacationRequest> appprovedVacationRequests = vacationRequestRepo.findAllAproved();
+        if (!vacationRequests.isEmpty()) {
+            List<VacationRequest> appprovedVacationRequests = vacationRequestRepo.findAllAproved();
 
-        vacationRequests.addAll(appprovedVacationRequests);
+            vacationRequests.addAll(appprovedVacationRequests);
 
-        HashSet<Object> seen = new HashSet<>();
-        vacationRequests.removeIf(e -> !seen.add(e.getRequest_id()));
+            HashSet<Object> seen = new HashSet<>();
+            vacationRequests.removeIf(e -> !seen.add(e.getRequest_id()));
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "vacation not found");
+        }
+
         return vacationRequests;
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/request")
-    public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest) {
+    public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest,
+                             HttpServletResponse response) throws IOException {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
 
@@ -81,8 +89,10 @@ public class VacationRequestController {
         vacationRequestRepo.update(vacationRequest);
 
         if (vacationRequest.getRequest_id() > 0) {
+            response.setStatus(201);
             return vacationRequest.getRequest_id();
         } else {
+            response.sendError(400, "coud not create vacation");
             return -1;
         }
     }
@@ -148,6 +158,7 @@ public class VacationRequestController {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         VacationRequest returnVacation = vacationRequestRepo.findById(id);
         if (returnVacation != null) {
+            response.setStatus(200);
             return returnVacation;
         } else {
             response.sendError(400, "vacation request not found");
