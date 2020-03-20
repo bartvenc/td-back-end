@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -21,7 +22,19 @@ public class IneligiblePeriod {
     private String period_start;
     private String period_end;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    public IneligiblePeriod(String period_start, String period_end) {
+        this.period_start = period_start;
+        this.period_end = period_end;
+        this.created_by = new HashSet<>();
+    }
+
+    public IneligiblePeriod() {
+        this.period_end = "null";
+        this.period_start = "null";
+        this.created_by = new HashSet<>();
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "ip_user",
             joinColumns = @JoinColumn(name = "ip_id"),
@@ -59,6 +72,10 @@ public class IneligiblePeriod {
 
     public void setCreated_by(Set<User> created_by) {
         this.created_by = created_by;
+    }
+
+    public void addUser(User user) {
+        this.created_by.add(user);
     }
 }
 

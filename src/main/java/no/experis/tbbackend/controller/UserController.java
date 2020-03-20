@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/user")
     public String getCurrentUserProfile(@CurrentUser UserPrincipal userPrincipal) {
         System.out.println("/USER");
-        return "http://localhost:8080/user" + userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+        return "https://infinite-tundra-25891.herokuapp.com/user" + userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
     @CrossOrigin(origins="*", allowedHeaders="*")
