@@ -1,7 +1,6 @@
 package no.experis.tbbackend.controller;
 
 
-import com.fasterxml.jackson.databind.node.TextNode;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
 import no.experis.tbbackend.model.VacationRequestStatus;
@@ -10,8 +9,6 @@ import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.repository.VacationRequestStatusRepo;
 import no.experis.tbbackend.security.CurrentUser;
 import no.experis.tbbackend.security.UserPrincipal;
-import org.assertj.core.util.Lists;
-import org.assertj.core.util.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class VacationRequestController {
