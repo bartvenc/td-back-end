@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -44,5 +45,17 @@ public class IneligiblePeriodController {
         return ineligiblePeriodRepo.findAll();
     }
 
-
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/admin/ineligible/{ip_id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public IneligiblePeriod getIPById(@PathVariable int ip_id, HttpServletResponse response) throws IOException {
+        IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
+        IneligiblePeriod returnIP = ineligiblePeriodRepo.findById(ip_id);
+        if (returnIP != null) {
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "IP not found");
+        }
+        return returnIP;
+    }
 }
