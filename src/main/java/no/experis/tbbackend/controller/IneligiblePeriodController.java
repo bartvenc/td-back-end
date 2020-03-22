@@ -30,7 +30,6 @@ public class IneligiblePeriodController {
         User requestUser = userRepository.findById(id);
 
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
-        //ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.save(ineligiblePeriod);
         ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.update(ineligiblePeriod);
@@ -40,7 +39,6 @@ public class IneligiblePeriodController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/ineligible")
-    @PreAuthorize("hasRole('ADMIN')")
     public List<IneligiblePeriod> getIP(HttpServletResponse response) throws IOException {
 
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
