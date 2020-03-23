@@ -71,11 +71,9 @@ public class IneligiblePeriodController {
     public void deleteIPById(@PathVariable int ip_id, HttpServletResponse response) throws IOException {
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
         IneligiblePeriod returnIP = ineligiblePeriodRepo.findById(ip_id);
-        if (returnIP != null) {
-            ineligiblePeriodRepo.delete(returnIP);
-            response.setStatus(200);
-        } else {
-            response.sendError(400, "IP not found");
-        }
+        long userId = returnIP.getCreated_by().iterator().next().getId();
+
+        ineligiblePeriodRepo.deleteInel(returnIP.getIp_id(),userId);
+        response.setStatus(200);
     }
 }
