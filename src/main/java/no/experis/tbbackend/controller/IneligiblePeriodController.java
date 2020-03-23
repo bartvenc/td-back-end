@@ -49,7 +49,7 @@ public class IneligiblePeriodController {
             response.sendError(400, "IP list is empty");
         }
         return IPs;
-    }
+    } 
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/ineligible/{ip_id}")
