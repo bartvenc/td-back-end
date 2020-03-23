@@ -196,4 +196,24 @@ public class CommentController {
             return null;
         }
     }
+
+    @CrossOrigin(origins = "", allowedHeaders = "")
+    @PatchMapping("/admin/request/{r_id}/comment/{c_id}")
+    public void deleteCommentByID(@PathVariable int r_id, @PathVariable int c_id,
+                                  @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
+        long id = userPrincipal.getId();
+        User requestUser = userRepository.findById(id);
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        VacationRequest vacationRequest = vacationRequestRepo.findById(r_id);
+        CommentRepo commentRepo = new CommentRepo();
+
+
+        if ((!requestUser.getId().equals(vacationRequest.getOwner().iterator().next().getId()))) {
+            Comment comment = commentRepo.findById(c_id);
+            vacationRequestRepo.deleteRequest_Comment(r_id, c_id);
+            commentRepo.deleteComment(r_id, c_id, comment.getUser().iterator().next().getId());
+        } else {
+            response.sendError(403, "Forbidden");
+        }
+    }
 }

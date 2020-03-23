@@ -66,4 +66,16 @@ public class IneligiblePeriodController {
         }
         return returnIP;
     }
+
+    @CrossOrigin(origins = "", allowedHeaders = "")
+    @PatchMapping("/admin/ineligible/{ip_id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteIPById(@PathVariable int ip_id, HttpServletResponse response) throws IOException {
+        IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
+        IneligiblePeriod returnIP = ineligiblePeriodRepo.findById(ip_id);
+        long userId = returnIP.getCreated_by().iterator().next().getId();
+
+        ineligiblePeriodRepo.deleteInel(returnIP.getIp_id(), userId);
+        response.setStatus(200);
+    }
 }

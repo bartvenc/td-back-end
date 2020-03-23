@@ -83,4 +83,18 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
             e.printStackTrace();
         }
     }
+
+    public void deleteRequest_Comment(long id, long comment_id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.createSQLQuery("DELETE FROM vacation_request_comments where request_id = ?1 AND comment_id = ?2").setParameter(1, id).setParameter(2, comment_id).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 }

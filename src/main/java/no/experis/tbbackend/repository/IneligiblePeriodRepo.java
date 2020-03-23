@@ -70,6 +70,21 @@ public class IneligiblePeriodRepo implements MainRepository<IneligiblePeriod> {
             e.printStackTrace();
         }
     }
+
+    public void deleteInel(long id, long u_id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.createSQLQuery("DELETE FROM ip_user where ip_id = ?1 and user_id =?2").setParameter(1, id).setParameter(2, u_id).executeUpdate();
+            session.createSQLQuery("DELETE FROM ineligible_periods where ip_id = ?1").setParameter(1, id).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 }
 
 
