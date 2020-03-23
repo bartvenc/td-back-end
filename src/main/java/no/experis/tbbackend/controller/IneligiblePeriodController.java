@@ -39,7 +39,6 @@ public class IneligiblePeriodController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/ineligible")
-    @PreAuthorize("hasRole('ADMIN')")
     public List<IneligiblePeriod> getIP(HttpServletResponse response) throws IOException {
 
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
