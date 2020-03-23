@@ -30,7 +30,6 @@ public class IneligiblePeriodController {
         User requestUser = userRepository.findById(id);
 
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
-        //ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.save(ineligiblePeriod);
         ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.update(ineligiblePeriod);
