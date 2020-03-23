@@ -30,7 +30,6 @@ public class IneligiblePeriodController {
         User requestUser = userRepository.findById(id);
 
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
-        //ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.save(ineligiblePeriod);
         ineligiblePeriod.addUser(requestUser);
         ineligiblePeriodRepo.update(ineligiblePeriod);
@@ -39,8 +38,7 @@ public class IneligiblePeriodController {
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/admin/ineligible")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/ineligible")
     public List<IneligiblePeriod> getIP(HttpServletResponse response) throws IOException {
 
         IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
@@ -65,5 +63,19 @@ public class IneligiblePeriodController {
             response.sendError(400, "IP not found");
         }
         return returnIP;
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PatchMapping("/admin/ineligible/{ip_id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteIPById(@PathVariable int ip_id, HttpServletResponse response) throws IOException {
+        IneligiblePeriodRepo ineligiblePeriodRepo = new IneligiblePeriodRepo();
+        IneligiblePeriod returnIP = ineligiblePeriodRepo.findById(ip_id);
+        if (returnIP != null) {
+            ineligiblePeriodRepo.delete(returnIP);
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "IP not found");
+        }
     }
 }
