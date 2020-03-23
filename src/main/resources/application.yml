@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-18-210-51-239.compute-1.amazonaws.com:5432/d24igj7ufocdif
-    username: ahyrxntwvzdtxp
-    password: 956dc1e96936a9ed7eddf193c3e51cf521b145dd5bc15cdf0fabcae2aed7d5ef
+    url: jdbc:postgresql://ec2-54-197-48-79.compute-1.amazonaws.com:5432/d81dv9afeoofq8
+    username: wphzxdagmtjtnz
+    password: ff100d7d8bc56ab3ea6401f0f41f21b8f4ab8e9e68e2d254df265ced49fa9d2b
 
   jpa:
     show-sql: true
@@ -19,7 +19,7 @@ spring:
           google:
             clientId: 519435970083-r9oa6c8hnft92eb0sanoqvrp5fnp06j0.apps.googleusercontent.com
             clientSecret: zI11pSBVj70_BldRbmqwMzjt
-            redirectUri: "https://murmuring-spire-39725.herokuapp.com/oauth2/callback/google"
+            redirectUri: "https://afternoon-mountain-34725.herokuapp.com/oauth2/callback/google"
             scope:
               - email
               - profile
