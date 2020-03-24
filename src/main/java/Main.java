@@ -1,4 +1,4 @@
-import no.experis.tbbackend.model.Notification;
+import no.experis.tbbackend.notification.Notification;
 import org.hibernate.HibernateException;
 import org.hibernate.Metamodel;
 import org.hibernate.query.Query;
@@ -10,7 +10,6 @@ import javax.persistence.metamodel.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
     private static final SessionFactory ourSessionFactory;

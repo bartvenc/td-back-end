@@ -1,4 +1,4 @@
-package no.experis.tbbackend.model;
+package no.experis.tbbackend.notification;
 
 import java.util.Date;
 
