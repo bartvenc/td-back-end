@@ -1,5 +1,9 @@
 package no.experis.tbbackend.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import net.minidev.json.JSONObject;
 import no.experis.tbbackend.exception.ResourceNotFoundException;
 import no.experis.tbbackend.model.User;
@@ -10,14 +14,17 @@ import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.security.CurrentUser;
 import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
+@Api(value = "User Controller", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     @Autowired
@@ -75,8 +82,10 @@ public class UserController {
         return "User not found";
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/user/{id}")
+    @ApiOperation("Gets the user with specific id")
+    @ApiResponses(@ApiResponse(code = 200, message = "OK", response = User.class))
     public String getUserAsUser(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling user/{ID}");
         UserRepo userRepo = new UserRepo();
