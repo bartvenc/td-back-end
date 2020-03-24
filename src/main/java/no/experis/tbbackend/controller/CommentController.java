@@ -11,8 +11,6 @@ import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -149,7 +147,7 @@ public class CommentController {
             commentRepo.update(comment);
             response.setStatus(200);
         } else {
-            response.sendError(400, "Coud not find Vacation");
+            response.sendError(400, "Could not find Vacation");
         }
 
         return comment;

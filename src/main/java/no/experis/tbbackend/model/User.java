@@ -30,6 +30,7 @@ public class User {
     @Column(nullable = false, name = "email_verified")
     private Boolean emailVerified = false;
 
+
     @JsonIgnore
     private String password;
 
@@ -125,5 +126,4 @@ public class User {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
-
 }

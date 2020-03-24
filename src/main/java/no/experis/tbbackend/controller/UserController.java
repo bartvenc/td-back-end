@@ -1,5 +1,7 @@
 package no.experis.tbbackend.controller;
 
+import com.google.gson.Gson;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import no.experis.tbbackend.exception.ResourceNotFoundException;
 import no.experis.tbbackend.model.User;
@@ -10,6 +12,9 @@ import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.security.CurrentUser;
 import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +62,6 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public String getUserAsAdmin(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling admin/user/{ID}");
-        UserRepo userRepo = new UserRepo();
         User returnUser = userRepository.findById(id);
         JSONObject object = new JSONObject();
         if (returnUser != null) {
@@ -101,7 +105,6 @@ public class UserController {
     public List<VacationRequest> getUserRequests(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling /user/{ID}/requests  ");
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
-        UserRepo userRepo = new UserRepo();
         List<VacationRequest> vacationRequests;
         User returnUser = userRepository.findById(id);
         if (returnUser != null) {
@@ -117,6 +120,24 @@ public class UserController {
             response.sendError(400, "user not found");
             return null;
         }
+    }
+
+    @CrossOrigin(origins="*", allowedHeaders="*")
+    @PatchMapping("/user/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void editUser(@PathVariable(value = "id") long id, @RequestBody String json, HttpServletResponse response) throws IOException {
+        System.out.println("calling /user/{ID}/edit");
+        User editUser = userRepository.findById(id);
+        JSONObject object = new JSONObject();
+        JsonObject obj = new Gson().fromJson(json, JsonObject.class);
+
+
+        editUser.setEmailVerified(obj.get("email_verified").getAsBoolean());
+        editUser.setName(obj.get("name").getAsString());
+        editUser.setAdmin(obj.get("admin").getAsBoolean());
+        UserPrincipal.create(editUser);
+        userRepository.save(editUser);
+        response.sendError(200, "Access granted to user");
     }
 }
 
