@@ -1,6 +1,5 @@
 package no.experis.tbbackend.controller;
 
-
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
 import no.experis.tbbackend.model.VacationRequestStatus;
@@ -17,12 +16,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * The type Vacation request controller.
+ */
 @RestController
 public class VacationRequestController {
 
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Gets all vacation request.
+     *
+     * @param response the response
+     * @return the all vacation request
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/request")
     @PreAuthorize("hasRole('ADMIN')")
@@ -39,6 +48,14 @@ public class VacationRequestController {
     }
 
 
+    /**
+     * Gets users vacation request.
+     *
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return the users vacation request
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request")
     public List<VacationRequest> getUsersVacationRequest(@CurrentUser UserPrincipal userPrincipal,
@@ -65,6 +82,15 @@ public class VacationRequestController {
         return vacationRequests;
     }
 
+    /**
+     * Create request int.
+     *
+     * @param userPrincipal   the user principal
+     * @param vacationRequest the vacation request
+     * @param response        the response
+     * @return the int
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/request")
     public int createRequest(@CurrentUser UserPrincipal userPrincipal, @RequestBody VacationRequest vacationRequest,
@@ -96,7 +122,14 @@ public class VacationRequestController {
             return -1;
         }
     }
-    //TODO add moderator id of admin accesings this endpoint
+
+    /**
+     * Edit request string.
+     *
+     * @param id     the id
+     * @param status the status
+     * @return the string
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PatchMapping("/admin/request/{id}/edit")
     @PreAuthorize("hasRole('ADMIN')")
@@ -126,6 +159,15 @@ public class VacationRequestController {
         return "Worked";
     }
 
+    /**
+     * Gets vacation request by id.
+     *
+     * @param vr_ID         the vr id
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return the vacation request by id
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request/{vr_ID}")
     public VacationRequest getVacationRequestByID(@PathVariable int vr_ID, @CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
@@ -139,7 +181,7 @@ public class VacationRequestController {
         VacationRequest returnVacation = vacationRequestRepo.findById(vr_ID);
         VacationRequestStatus requestStatus = vacationRequestStatusRepo.findById(returnVacation.getStatus().iterator().next().getStatus_id());
 
-        if ((requestUser.getId() != returnVacation.getOwner().iterator().next().getId()) ||
+        if ((!requestUser.getId().equals(returnVacation.getOwner().iterator().next().getId())) ||
                 (!requestStatus.getStatus().equals("Approved"))) {
             response.sendError(403);
             return null;
@@ -147,14 +189,22 @@ public class VacationRequestController {
             response.setStatus(200);
             return returnVacation;
         }
-
     }
 
+    /**
+     * Gets vacation request by id as admin.
+     *
+     * @param userPrincipal the user principal
+     * @param id            the id
+     * @param response      the response
+     * @return the vacation request by id as admin
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("admin/request/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public VacationRequest getVacationRequestByIdAsAdmin(@CurrentUser UserPrincipal userPrincipal, @PathVariable int id, HttpServletResponse response) throws IOException {
-        System.out.println("inside /admin/request/{id}/");
+        System.out.println("/admin/request/{id}/");
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         VacationRequest returnVacation = vacationRequestRepo.findById(id);
         if (returnVacation != null) {
@@ -165,6 +215,4 @@ public class VacationRequestController {
             return null;
         }
     }
-
-
 }

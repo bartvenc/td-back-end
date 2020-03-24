@@ -1,7 +1,6 @@
 package no.experis.tbbackend.controller;
 
 import com.google.gson.Gson;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import no.experis.tbbackend.exception.ResourceNotFoundException;
 import no.experis.tbbackend.model.User;
@@ -27,7 +26,7 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
+    
 
     @CrossOrigin(origins="*", allowedHeaders="*")
     @GetMapping("/users")
@@ -133,7 +132,6 @@ public class UserController {
 
 
         editUser.setEmailVerified(obj.get("email_verified").getAsBoolean());
-        editUser.setName(obj.get("name").getAsString());
         editUser.setAdmin(obj.get("admin").getAsBoolean());
         UserPrincipal.create(editUser);
         userRepository.save(editUser);
