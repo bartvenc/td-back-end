@@ -1,3 +1,4 @@
+import no.experis.tbbackend.model.Notification;
 import org.hibernate.HibernateException;
 import org.hibernate.Metamodel;
 import org.hibernate.query.Query;
@@ -7,6 +8,8 @@ import org.hibernate.cfg.Configuration;
 
 import javax.persistence.metamodel.EntityType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -29,6 +32,9 @@ public class Main {
 
     public static void main(final String[] args) throws Exception {
         final Session session = getSession();
+
+        List<Notification> notificationList = new ArrayList<>();
+
         try {
             System.out.println("querying all the managed entities...");
             final Metamodel metamodel = session.getSessionFactory().getMetamodel();

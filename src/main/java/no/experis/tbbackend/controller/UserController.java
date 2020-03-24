@@ -21,27 +21,47 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type User controller.
+ */
 @RestController
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+
+    /**
+     * Get all users list.
+     *
+     * @return the list
+     */
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/users")
-    public List<User> getAllUsers(){
-        return  userRepository.findAll();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    /**
+     * Gets current user profile.
+     *
+     * @param userPrincipal the user principal
+     * @return the current user profile
+     */
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/user")
     public String getCurrentUserProfile(@CurrentUser UserPrincipal userPrincipal) {
         System.out.println("/USER");
         return "https://infinite-tundra-25891.herokuapp.com/user" + userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    /**
+     * Gets admin current user email.
+     *
+     * @param userPrincipal the user principal
+     * @return the admin current user email
+     */
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/me")
     @PreAuthorize("hasRole('ADMIN')")
     public User getAdminCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
@@ -49,14 +69,28 @@ public class UserController {
         return userRepository.findByEmail(userPrincipal.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    /**
+     * Gets current user email.
+     *
+     * @param userPrincipal the user principal
+     * @return the current user email
+     */
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/user/me")
     public User getCurrentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
         System.out.println("CALLING /USER/ME");
         return userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    /**
+     * Gets user as admin.
+     *
+     * @param id       the id
+     * @param response the response
+     * @return the user as admin
+     * @throws IOException the io exception
+     */
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("admin/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String getUserAsAdmin(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
@@ -78,7 +112,15 @@ public class UserController {
         return "User not found";
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    /**
+     * Gets user as user.
+     *
+     * @param id       the id
+     * @param response the response
+     * @return the user as user
+     * @throws IOException the io exception
+     */
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/user/{id}")
     public String getUserAsUser(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling user/{ID}");
@@ -99,7 +141,15 @@ public class UserController {
         return "User not found";
     }
 
-    @CrossOrigin(origins="*", allowedHeaders="*")
+    /**
+     * Gets user requests.
+     *
+     * @param id       the id
+     * @param response the response
+     * @return the user requests
+     * @throws IOException the io exception
+     */
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/user/{id}/requests")
     public List<VacationRequest> getUserRequests(@PathVariable(value = "id") long id, HttpServletResponse response) throws IOException {
         System.out.println("calling /user/{ID}/requests  ");
