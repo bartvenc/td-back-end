@@ -126,7 +126,7 @@ public class UserController {
     @PatchMapping("/user/{id}/edit")
     @PreAuthorize("hasRole('ADMIN')")
     public void editUser(@PathVariable(value = "id") long id, @RequestBody String json, HttpServletResponse response) throws IOException {
-        System.out.println("calling /user/{ID}/edit");
+        System.out.println("calling /user/{ID}/edit now");
         User editUser = userRepository.findById(id);
         JSONObject object = new JSONObject();
         JsonObject obj = new Gson().fromJson(json, JsonObject.class);
