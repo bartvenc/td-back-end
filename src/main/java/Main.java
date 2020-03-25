@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
     private static final SessionFactory ourSessionFactory;
 
     static {
@@ -32,7 +33,6 @@ public class Main {
     public static void main(final String[] args) throws Exception {
         final Session session = getSession();
 
-        List<Notification> notificationList = new ArrayList<>();
 
         try {
             System.out.println("querying all the managed entities...");
