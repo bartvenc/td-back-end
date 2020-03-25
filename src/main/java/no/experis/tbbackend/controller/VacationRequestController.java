@@ -243,9 +243,10 @@ public class VacationRequestController {
     @PatchMapping("/admin/request/{vr_ID}")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteVacationRequest(@CurrentUser UserPrincipal userPrincipal, @PathVariable int vr_ID, HttpServletResponse response) throws IOException {
-        long id = userPrincipal.getId();
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
-        vacationRequestRepo.deleteRequest_State(vr_ID, id);
+        long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
+        long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
+        vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id);
         return "Deleted vacation request";
     }
 }

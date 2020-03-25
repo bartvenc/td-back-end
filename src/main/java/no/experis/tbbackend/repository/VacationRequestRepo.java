@@ -84,13 +84,16 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
         }
     }
 
-    public void deleteRequest_State(long id,long userId){
+    public void deleteRequest_State(long id,long userId, long status_id){
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery("DELETE FROM request_state where request_id = ?1 AND status_id = ?2").setParameter(1, id).setParameter(2, id+1).executeUpdate();
-            session.createSQLQuery("DELETE FROM vacation_request_status where status_id = ?1").setParameter(1, id+1).executeUpdate();
+            session.createSQLQuery("DELETE FROM request_state where request_id = ?1 AND status_id = ?2").setParameter(1, id).setParameter(2, status_id).executeUpdate();
+            System.out.println("DELETE FROM REQUESt_StAte REQUEST_ID = "+id+" STATUS_ID = "+status_id);
+            session.createSQLQuery("DELETE FROM vacation_request_status where status_id = ?1").setParameter(1, status_id).executeUpdate();
+            System.out.println("DELETE FROM vacation_request_status where status_id = "+status_id);
             session.createSQLQuery("DELETE FROM request_user where request_id = ?1 and user_id = ?2").setParameter(1, id).setParameter(2, userId).executeUpdate();
+            System.out.println("DELETE FROM request_user where request_id = "+id+" and user_id = "+userId);
             session.createSQLQuery("DELETE FROM vacation_requests where request_id = ?1").setParameter(1, id).executeUpdate();
             transaction.commit();
         }catch (Exception e) {
