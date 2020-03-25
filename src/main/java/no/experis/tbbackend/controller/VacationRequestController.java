@@ -125,8 +125,6 @@ public class VacationRequestController {
         Date newDate = new Date(System.currentTimeMillis());
         String dateStamp = sdf.format(timestamp).toString();
 
-        System.out.println("dateStamp -------------------------------------------------");
-        System.out.println(" ------------------ " + dateStamp + " ------------------");
         VacationRequestNotification newNote = new VacationRequestNotification
                 ("new VacationRequest", newDate,
                         dateStamp,
@@ -135,7 +133,7 @@ public class VacationRequestController {
                         Long.toString(vacationRequest.getRequest_id()), id, false);
 
         Singleton.getInstance().getArrayList().add(newNote);
-        // System.out.println(Singleton.getInstance().getArrayList().get(0).getType());
+
 
         if (vacationRequest.getRequest_id() > 0) {
             response.setStatus(201);
@@ -178,6 +176,18 @@ public class VacationRequestController {
         vacationRequestStatusRepo.update(requestStatus);
         System.out.println("updated request status from repo " + vacationRequestStatusRepo.findById(editVacation.getStatus().iterator().next().getStatus_id()).getStatus());
 
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Date newDate = new Date(System.currentTimeMillis());
+        String dateStamp = sdf.format(timestamp).toString();
+
+        VacationRequestNotification newNote = new VacationRequestNotification
+                ("new VacationRequest Status", newDate,
+                        dateStamp,
+                        "Vacation Request " + editVacation.getTitle() + " was " + gotStatus +
+                                " by admin",
+                        Long.toString(editVacation.getRequest_id()), editVacation.getOwner().iterator().next().getId(), true);
+
+        Singleton.getInstance().getArrayList().add(newNote);
 
         return "Worked";
     }

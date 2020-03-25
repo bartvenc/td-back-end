@@ -34,15 +34,10 @@ public class NotificationController {
         long id = userPrincipal.getId();
 
         List<Notification> theList = Singleton.getInstance().getArrayList();
-        System.out.println("The whole list");
-        for (Notification n : theList) {
-            System.out.println(n.getType());
-        }
+
         List<Notification> returList = theList.stream()
                 .filter(p -> p.getUser_id() == id && p.isAdmin()).collect(Collectors.toList());
 
-
-        System.out.println("The filtered list for user " + id);
         for (Notification n : returList) {
             System.out.println(n.getType() + " " + n.getUser_id());
         }
@@ -54,9 +49,9 @@ public class NotificationController {
         return returList;
     }
 
-
-    @GetMapping("admin/notification/")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("admin/notification/")
     public List<Notification> getNotificationAsAdmin(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
         long id = userPrincipal.getId();
 
@@ -75,5 +70,4 @@ public class NotificationController {
         }
         return returList;
     }
-
 }
