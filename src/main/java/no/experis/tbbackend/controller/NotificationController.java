@@ -11,6 +11,7 @@ import no.experis.tbbackend.security.UserPrincipal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import no.experis.tbbackend.controller.NotificationController.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class NotificationController {
     private UserRepository userRepository;
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/notification/{id}")
+    @GetMapping("/notification/")
     public List<Notification> getNotification(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
         long id = userPrincipal.getId();
 
@@ -42,6 +43,28 @@ public class NotificationController {
 
 
         System.out.println("The filtered list for user " + id);
+        for (Notification n : returList) {
+            System.out.println(n.getType() + " " + n.getUser_id());
+        }
+        if (!theList.isEmpty()) {
+            response.setStatus(200);
+        } else {
+            response.sendError(400, "Not notifications found for the user");
+        }
+        return returList;
+    }
+
+
+    @GetMapping("admin/notification/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Notification> getNotificationAsAdmin(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
+        long id = userPrincipal.getId();
+
+        List<Notification> theList = Singleton.getInstance().getArrayList();
+
+        List<Notification> returList = theList.stream()
+                .filter(p -> !p.isAdmin()).collect(Collectors.toList());
+
         for (Notification n : returList) {
             System.out.println(n.getType() + " " + n.getUser_id());
         }

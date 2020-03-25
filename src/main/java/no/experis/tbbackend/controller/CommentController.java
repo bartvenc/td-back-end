@@ -3,6 +3,8 @@ package no.experis.tbbackend.controller;
 import no.experis.tbbackend.model.Comment;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
+import no.experis.tbbackend.notification.Singleton;
+import no.experis.tbbackend.notification.VacationRequestNotification;
 import no.experis.tbbackend.repository.CommentRepo;
 import no.experis.tbbackend.repository.UserRepository;
 import no.experis.tbbackend.repository.VacationRequestRepo;
@@ -96,12 +98,22 @@ public class CommentController {
 
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         CommentRepo commentRepo = new CommentRepo();
-
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
-        //Comment newComment = new Comment(comment.getMessage(), comment.getDatetimestamp());
 
-        if ((requestUser.getId() == editVacation.getOwner().iterator().next().getId())) {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Date newDate = new Date(System.currentTimeMillis());
+        String dateStamp = sdf.format(timestamp).toString();
+
+        VacationRequestNotification newNote = new VacationRequestNotification
+                ("new comment", newDate,
+                        dateStamp,
+                        "new comment on vacationRequest " + editVacation.getTitle() +
+                                " was created by " + editVacation.getOwner().iterator().next().getName(),
+                        Long.toString(editVacation.getRequest_id()), id, false);
+
+        Singleton.getInstance().getArrayList().add(newNote);
+
+        if ((requestUser.getId().equals(editVacation.getOwner().iterator().next().getId()))) {
             comment.setDatetimestamp(sdf.format(timestamp).toString());
             comment.setDate(new Date(System.currentTimeMillis()));
             commentRepo.save(comment);
@@ -110,7 +122,6 @@ public class CommentController {
             System.out.println("new comment " + editVacation.getComment().iterator().next().getMessage());
 
             vacationRequestRepo.update(editVacation);
-            //Comment newnewComment = commentRepo.findById(comment.getComment_id());
             comment.addUser(requestUser);
             commentRepo.update(comment);
             response.setStatus(200);
@@ -136,8 +147,21 @@ public class CommentController {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         comment.setDatetimestamp(sdf.format(timestamp).toString());
         comment.setDate(new Date(System.currentTimeMillis()));
-
+        Date newDate = new Date(System.currentTimeMillis());
+        String dateStamp = sdf.format(timestamp).toString();
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
+
+        VacationRequestNotification newNote = new VacationRequestNotification
+                ("new comment", newDate,
+                        dateStamp,
+                        "new comment on vacationRequest " + editVacation.getTitle() +
+                                " was created by Admin ",
+                        Long.toString(editVacation.getRequest_id()), editVacation.getOwner().iterator().next().getId(), true);
+
+        Singleton.getInstance().getArrayList().add(newNote);
+
+
+
         if (editVacation != null) {
             commentRepo.save(comment);
             editVacation.addComment(comment);
