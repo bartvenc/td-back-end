@@ -110,7 +110,6 @@ public class VacationRequestController {
 
         vacationRequestRepo.save(vacationRequest);
 
-        System.out.println("asdasdasdada " + vacationRequest.getRequest_id());
         vacationRequest.addOwner(requestUser);
         vacationRequestRepo.update(vacationRequest);
 
@@ -155,8 +154,6 @@ public class VacationRequestController {
     @PatchMapping("/admin/request/{id}/edit")
     @PreAuthorize("hasRole('ADMIN')")
     public String editRequest(@PathVariable int id, @RequestBody String status) {
-        System.out.println("EDIT STATUS");
-        System.out.println("STATUS " + status);
 
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         VacationRequestStatusRepo vacationRequestStatusRepo = new VacationRequestStatusRepo();
@@ -164,17 +161,10 @@ public class VacationRequestController {
         VacationRequest editVacation = vacationRequestRepo.findById(id);
         VacationRequestStatus requestStatus = vacationRequestStatusRepo.findById(editVacation.getStatus().iterator().next().getStatus_id());
 
-        System.out.println("REQUESTSTATUS WITH ID" + requestStatus.getStatus_id() + " " + requestStatus.getStatus());
         String gotStatus = status.toString();
-        System.out.println("SETTING THIS VALUE TO STATUS " + gotStatus);
         requestStatus.setStatus(gotStatus);
-        System.out.println("EDITEDREQUESTSTATUS " + requestStatus.getStatus());
-
         vacationRequestRepo.update(editVacation);
-        System.out.println("From updated vacatio repo " + vacationRequestRepo.findById(editVacation.getRequest_id()).getStatus().iterator().next().getStatus());
-
         vacationRequestStatusRepo.update(requestStatus);
-        System.out.println("updated request status from repo " + vacationRequestStatusRepo.findById(editVacation.getStatus().iterator().next().getStatus_id()).getStatus());
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Date newDate = new Date(System.currentTimeMillis());

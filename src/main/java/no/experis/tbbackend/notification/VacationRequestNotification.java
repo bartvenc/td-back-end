@@ -17,9 +17,6 @@ public class VacationRequestNotification extends Notification {
         super(type, date, datetimestamp, user_id, isAdmin);
         this.message = message;
         this.URL = this.URL.concat(vr_id);
-
-
-        System.out.println("VR get url: " + this.URL);
     }
 
     public String getMessage() {

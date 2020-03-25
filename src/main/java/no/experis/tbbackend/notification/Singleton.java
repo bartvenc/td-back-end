@@ -17,7 +17,6 @@ public class Singleton {
     public static Singleton getInstance() {
         if (instance == null) {
             instance = new Singleton();
-            System.out.println("--------------------------New instance---------------------------------------------");
         }
         return instance;
     }
