@@ -3,6 +3,9 @@ package no.experis.tbbackend.controller;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
 import no.experis.tbbackend.model.VacationRequestStatus;
+import no.experis.tbbackend.notification.Notification;
+import no.experis.tbbackend.notification.Singleton;
+import no.experis.tbbackend.notification.VacationRequestNotification;
 import no.experis.tbbackend.repository.UserRepository;
 import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.repository.VacationRequestStatusRepo;
@@ -12,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -21,9 +27,11 @@ import java.util.*;
  */
 @RestController
 public class VacationRequestController {
-
+    public List<Notification> notificationList = new ArrayList<>();
     @Autowired
     private UserRepository userRepository;
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
 
     /**
      * Gets all vacation request.
@@ -113,6 +121,21 @@ public class VacationRequestController {
 
         vacationRequest.addRequest(vacationRequestStatus);
         vacationRequestRepo.update(vacationRequest);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Date newDate = new Date(System.currentTimeMillis());
+        String dateStamp = sdf.format(timestamp).toString();
+
+        System.out.println("dateStamp -------------------------------------------------");
+        System.out.println(" ------------------ " + dateStamp + " ------------------");
+        VacationRequestNotification newNote = new VacationRequestNotification
+                ("new VacationRequest", newDate,
+                        dateStamp,
+                        "Vacation Request " + vacationRequest.getTitle() +
+                                " was created by " + vacationRequest.getOwner().iterator().next().getName(),
+                        Long.toString(vacationRequest.getRequest_id()), id, false);
+
+        Singleton.getInstance().getArrayList().add(newNote);
+        // System.out.println(Singleton.getInstance().getArrayList().get(0).getType());
 
         if (vacationRequest.getRequest_id() > 0) {
             response.setStatus(201);
