@@ -147,7 +147,7 @@ public class CommentController {
             commentRepo.update(comment);
             response.setStatus(200);
         } else {
-            response.sendError(400, "Could not find Vacation");
+            response.sendError(400, "Coul   d not find Vacation");
         }
 
         return comment;

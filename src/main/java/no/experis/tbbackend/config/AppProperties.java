@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * The type App properties.
+ * This class retrieves the necessary information from the application.yml file to setup
+ * connections, cookies and the approved redirectUrLs-
  */
 @Configuration
 @ConfigurationProperties(prefix = "app")
@@ -78,7 +80,7 @@ public class AppProperties {
          * Authorized redirect uris Oauth 2.
          *
          * @param authorizedRedirectUris the authorized redirect uris
-         * @return the o auth 2
+         * @return the Oauth2
          */
         public OAuth2 authorizedRedirectUris(List<String> authorizedRedirectUris) {
             this.authorizedRedirectUris = authorizedRedirectUris;
