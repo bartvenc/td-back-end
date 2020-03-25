@@ -238,4 +238,14 @@ public class VacationRequestController {
             return null;
         }
     }
+
+    @CrossOrigin(origins = "", allowedHeaders = "")
+    @PatchMapping("/admin/request/{vr_ID}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteVacationRequest(@CurrentUser UserPrincipal userPrincipal, @PathVariable int vr_ID, HttpServletResponse response) throws IOException {
+        long id = userPrincipal.getId();
+        VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
+        vacationRequestRepo.deleteRequest_State(vr_ID, id);
+        return "Deleted vacation request";
+    }
 }

@@ -14,7 +14,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   security:
     oauth2:
-      client:
+      client:d
         registration:
           google:
             clientId: 519435970083-r9oa6c8hnft92eb0sanoqvrp5fnp06j0.apps.googleusercontent.com
