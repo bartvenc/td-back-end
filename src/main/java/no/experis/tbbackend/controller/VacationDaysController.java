@@ -18,8 +18,6 @@ public class VacationDaysController {
     @GetMapping("/vacationDays/")
     public long getVacationDays(HttpServletResponse response) throws IOException{
         response.setStatus(200);
-        System.out.println("___________________TWINGLETON_______________________");
-        System.out.println(Twingleton.getInstance().getMax_vacation_days());
         return Twingleton.getInstance().getMax_vacation_days();
     }
 
@@ -33,8 +31,6 @@ public class VacationDaysController {
 
         int v_days = obj.get("max_vacation_days").getAsInt();
         Twingleton.getInstance().setMax_vacation_days(v_days);
-        System.out.println("___________________TWINGLETON POST_______________________");
-        System.out.println(Twingleton.getInstance().getMax_vacation_days());
         response.setStatus(200);
     }
 }
