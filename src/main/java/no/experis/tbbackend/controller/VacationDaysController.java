@@ -3,8 +3,8 @@ package no.experis.tbbackend.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minidev.json.JSONObject;
-import no.experis.tbbackend.model.VacationDays;
-import no.experis.tbbackend.repository.VacationDaysRepo;
+import no.experis.tbbackend.notification.Twingleton;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,32 +13,28 @@ import java.io.IOException;
 @RestController
 public class VacationDaysController {
 
-    private VacationDaysRepo vacationDaysRepo = new VacationDaysRepo();
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/vacationDays/{v_id}")
-    public VacationDays getVacationDays(@PathVariable int v_id, HttpServletResponse response) throws IOException{
-        VacationDays vacationDays = vacationDaysRepo.findById(v_id);
-
+    @GetMapping("/vacationDays/")
+    public long getVacationDays(HttpServletResponse response) throws IOException{
         response.setStatus(200);
-        return vacationDays;
+        System.out.println("___________________TWINGLETON_______________________");
+        System.out.println(Twingleton.getInstance().getMax_vacation_days());
+        return Twingleton.getInstance().getMax_vacation_days();
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @PostMapping("/vacationDays")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("admin/vacationDays")
     public void patchVacationDays(@RequestBody String maxVacationDays, HttpServletResponse response) throws IOException{
-        System.out.println("HERE IT IS BEFORE!!!!!!!!!!!    "+ maxVacationDays);
 
         JSONObject object = new JSONObject();
         JsonObject obj = new Gson().fromJson(maxVacationDays, JsonObject.class);
 
-
         int v_days = obj.get("max_vacation_days").getAsInt();
-        System.out.println("HERE IT IS AFTER!!!!!!!!!!!    TYPE OF "+ v_days);
-        VacationDays vacationDays = new VacationDays();
-        vacationDays.setMax_vacationDays(v_days);
-        vacationDaysRepo.save(vacationDays);
-        vacationDaysRepo.update(vacationDays);
+        Twingleton.getInstance().setMax_vacation_days(v_days);
+        System.out.println("___________________TWINGLETON POST_______________________");
+        System.out.println(Twingleton.getInstance().getMax_vacation_days());
         response.setStatus(200);
     }
 }
