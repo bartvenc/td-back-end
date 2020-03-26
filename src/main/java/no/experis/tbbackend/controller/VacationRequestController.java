@@ -138,7 +138,7 @@ public class VacationRequestController {
             response.setStatus(201);
             return vacationRequest.getRequest_id();
         } else {
-            response.sendError(400, "coud not create vacation");
+            response.sendError(400, "could not create vacation");
             return -1;
         }
     }

@@ -33,7 +33,6 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-
     @Autowired
     private TokenProvider tokenProvider;
 
