@@ -19,7 +19,7 @@ spring:
           google:
             clientId: 519435970083-r9oa6c8hnft92eb0sanoqvrp5fnp06j0.apps.googleusercontent.com
             clientSecret: zI11pSBVj70_BldRbmqwMzjt
-            redirectUri: "http://localhost:8080/oauth2/callback/google"
+            redirectUri: "https://afternoon-mountain-34725.herokuapp.com/oauth2/callback/google"
             scope:
               - email
               - profile
