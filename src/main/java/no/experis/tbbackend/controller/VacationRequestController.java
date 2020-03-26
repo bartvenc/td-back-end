@@ -125,7 +125,7 @@ public class VacationRequestController {
         String dateStamp = sdf.format(timestamp).toString();
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                ("new VacationRequest", newDate,
+                (vacationRequest.getRequest_id(),"new VacationRequest", newDate,
                         dateStamp,
                         "Vacation Request " + vacationRequest.getTitle() +
                                 " was created by " + vacationRequest.getOwner().iterator().next().getName(),
@@ -171,7 +171,7 @@ public class VacationRequestController {
         String dateStamp = sdf.format(timestamp).toString();
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                ("new VacationRequest Status", newDate,
+                (editVacation.getRequest_id(),"new VacationRequest Status", newDate,
                         dateStamp,
                         "Vacation Request " + editVacation.getTitle() + " was " + gotStatus +
                                 " by admin",
@@ -242,19 +242,20 @@ public class VacationRequestController {
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/admin/request/{vr_ID}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deleteVacationRequestAdmin(@PathVariable int vr_ID, HttpServletResponse response) throws IOException {
+    public boolean deleteVacationRequestAdmin(@PathVariable int vr_ID, HttpServletResponse response) throws IOException {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
         long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
         vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
-        return "Deleted vacation request";
+        response.setStatus(200);
+        return true;
     }
 
 
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/request/{vr_ID}")
-    public void deleteVacationRequest(@CurrentUser UserPrincipal userPrincipal, @PathVariable int vr_ID, HttpServletResponse response) throws IOException {
+    public boolean deleteVacationRequest(@CurrentUser UserPrincipal userPrincipal, @PathVariable int vr_ID, HttpServletResponse response) throws IOException {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
@@ -264,9 +265,8 @@ public class VacationRequestController {
         if(user_id == id){
             vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
             response.setStatus(200);
-        }else{
-            response.sendError(400,"Not allowed to delete");
+            return true;
         }
-
+        return false;
     }
 }

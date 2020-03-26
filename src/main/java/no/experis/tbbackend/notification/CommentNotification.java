@@ -12,9 +12,9 @@ public class CommentNotification extends Notification {
     private long userId;
 
 
-    public CommentNotification(String type, Date date, String datetimestamp,
+    public CommentNotification(long notification_id, String type, Date date, String datetimestamp,
                                        String message, String vr_id, Long user_id, boolean isAdmin) {
-        super(type, date, datetimestamp, user_id, isAdmin);
+        super(notification_id,type, date, datetimestamp, user_id, isAdmin);
         this.message = message;
         this.URL = this.URL.concat(vr_id);
 

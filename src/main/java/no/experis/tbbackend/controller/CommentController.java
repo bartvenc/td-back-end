@@ -105,7 +105,7 @@ public class CommentController {
         String dateStamp = sdf.format(timestamp).toString();
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                ("new comment", newDate,
+                (editVacation.getRequest_id(),"new comment", newDate,
                         dateStamp,
                         "new comment on vacationRequest " + editVacation.getTitle() +
                                 " was created by " + editVacation.getOwner().iterator().next().getName(),
@@ -152,7 +152,7 @@ public class CommentController {
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                ("new comment", newDate,
+                (editVacation.getRequest_id(),"new comment", newDate,
                         dateStamp,
                         "new comment on vacationRequest " + editVacation.getTitle() +
                                 " was created by Admin ",
@@ -171,7 +171,7 @@ public class CommentController {
             commentRepo.update(comment);
             response.setStatus(200);
         } else {
-            response.sendError(400, "Coul   d not find Vacation");
+            response.sendError(400, "Could not find Vacation");
         }
 
         return comment;

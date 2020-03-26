@@ -45,8 +45,6 @@ public class IneligiblePeriodController {
         List<IneligiblePeriod> IPs = ineligiblePeriodRepo.findAll();
         if (!IPs.isEmpty()) {
             response.setStatus(200);
-        } else {
-            response.sendError(400, "IP list is empty");
         }
         return IPs;
     }

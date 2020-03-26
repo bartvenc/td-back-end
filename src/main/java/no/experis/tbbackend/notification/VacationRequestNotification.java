@@ -12,9 +12,9 @@ public class VacationRequestNotification extends Notification {
     private long userId;
 
 
-    public VacationRequestNotification(String type, Date date, String datetimestamp,
+    public VacationRequestNotification(long notification_id, String type, Date date, String datetimestamp,
                                        String message, String vr_id, Long user_id, boolean isAdmin) {
-        super(type, date, datetimestamp, user_id, isAdmin);
+        super(notification_id, type, date, datetimestamp, user_id, isAdmin);
         this.message = message;
         this.URL = this.URL.concat(vr_id);
     }

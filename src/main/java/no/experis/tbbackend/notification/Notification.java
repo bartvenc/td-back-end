@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class Notification {
 
-    private int notification_id;
+    private long notification_id;
     private String type;
     private String datetimestamp;
     private Date date;
@@ -15,7 +15,8 @@ public abstract class Notification {
     private boolean isAdmin;
 
 
-    public Notification(String type, Date date, String datetimestamp, Long user_id, boolean isAdmin) {
+    public Notification(long notification_id, String type, Date date, String datetimestamp, Long user_id, boolean isAdmin) {
+        this.notification_id = notification_id;
         this.type = type;
         this.date = date;
         this.datetimestamp = datetimestamp;
@@ -23,7 +24,7 @@ public abstract class Notification {
         this.isAdmin = isAdmin;
     }
 
-    public int getNotification_id() {
+    public long getNotification_id() {
         return notification_id;
     }
 
