@@ -25,8 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
- * The type Security config. Enables CORS to the frontend client, in order for it to access the API from a different origin.
- * Currently we have all origins enabled, for development.
+ * The type Security config.
  */
 @Configuration
 @EnableWebSecurity
@@ -80,19 +79,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+                .userDetailsService(customUserDetailsService);
     }
 
-    /**
-     * Password encoder password encoder.
-     *
-     * @return the password encoder
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
