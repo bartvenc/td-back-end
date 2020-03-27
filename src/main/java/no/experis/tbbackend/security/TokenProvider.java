@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * The type Token provider.
+ * This class generates and verifies the JWT.
+ */
 @Service
 public class TokenProvider {
 
@@ -16,10 +20,21 @@ public class TokenProvider {
 
     private AppProperties appProperties;
 
+    /**
+     * Instantiates a new Token provider.
+     *
+     * @param appProperties the app properties
+     */
     public TokenProvider(AppProperties appProperties) {
         this.appProperties = appProperties;
     }
 
+    /**
+     * Create token string.
+     *
+     * @param authentication the authentication
+     * @return the string
+     */
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
@@ -34,6 +49,12 @@ public class TokenProvider {
                 .compact();
     }
 
+    /**
+     * Gets user id from token.
+     *
+     * @param token the token
+     * @return the user id from token
+     */
     public Long getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(appProperties.getAuth().getTokenSecret())
@@ -43,6 +64,12 @@ public class TokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 
+    /**
+     * Validate token boolean.
+     *
+     * @param authToken the auth token
+     * @return the boolean
+     */
     public boolean validateToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);

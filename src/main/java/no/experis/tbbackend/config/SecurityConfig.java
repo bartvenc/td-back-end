@@ -19,14 +19,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
- * The type Security config.
+ * The type Security config. All the security configurations for the backend are located here.
+ *
  */
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -48,11 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
+
     @Autowired
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     /**
-     * Token authentication filter token authentication filter.
+     * Token authentication filter. Reads and validates all the tokens from the Authentication header,
      *
      * @return the token authentication filter
      */
@@ -64,13 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Cookie authorization request repository http cookie Oauth2 authorization request repository.
      *
-     * @return the http cookie o auth 2 authorization request repository
+     * @return the http cookie Oauth2 authorization request repository
      */
-/*
-      By default, Spring OAuth2 uses HttpSessionOAuth2AuthorizationRequestRepository to save
-      the authorization request. But, since our service is stateless, we can't save it in
-      the session. We'll save the request in a Base64 encoded cookie instead.
-    */
     @Bean
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
