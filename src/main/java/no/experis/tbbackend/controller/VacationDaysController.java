@@ -10,21 +10,38 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Vacation days controller.
+ */
 @RestController
 public class VacationDaysController {
 
 
+    /**
+     * Gets vacation days.
+     *
+     * @param response the response
+     * @return the vacation days
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/vacationDays/")
-    public long getVacationDays(HttpServletResponse response) throws IOException{
+    public long getVacationDays(HttpServletResponse response) throws IOException {
         response.setStatus(200);
         return Twingleton.getInstance().getMax_vacation_days();
     }
 
+    /**
+     * Patch vacation days.
+     *
+     * @param maxVacationDays the max vacation days
+     * @param response        the response
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("admin/vacationDays")
-    public void patchVacationDays(@RequestBody String maxVacationDays, HttpServletResponse response) throws IOException{
+    public void patchVacationDays(@RequestBody String maxVacationDays, HttpServletResponse response) throws IOException {
 
         JSONObject object = new JSONObject();
         JsonObject obj = new Gson().fromJson(maxVacationDays, JsonObject.class);

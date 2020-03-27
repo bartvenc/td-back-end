@@ -84,7 +84,15 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
         }
     }
 
-    public void deleteRequest_State(long id,long userId, long status_id, long comment_id){
+    /**
+     * Delete request state.
+     *
+     * @param id         the  vacation request id
+     * @param userId     the user id
+     * @param status_id  the status id
+     * @param comment_id the comment id
+     */
+    public void deleteRequest_State(long id, long userId, long status_id, long comment_id) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();

@@ -23,11 +23,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Notification controller.
+ */
 @RestController
 public class NotificationController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Gets notification.
+     *
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return the notification
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/notification/")
     public List<Notification> getNotification(@CurrentUser UserPrincipal userPrincipal, HttpServletResponse response) throws IOException {
@@ -49,6 +60,14 @@ public class NotificationController {
         return returList;
     }
 
+    /**
+     * Gets notification as admin.
+     *
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return the notification as admin
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("admin/notification/")

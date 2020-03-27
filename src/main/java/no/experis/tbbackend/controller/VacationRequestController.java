@@ -27,6 +27,9 @@ import java.util.*;
  */
 @RestController
 public class VacationRequestController {
+    /**
+     * The Notification list.
+     */
     public List<Notification> notificationList = new ArrayList<>();
     @Autowired
     private UserRepository userRepository;
@@ -34,10 +37,10 @@ public class VacationRequestController {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
 
     /**
-     * Gets all vacation request.
+     * Gets all vacation request as admin.
      *
      * @param response the response
-     * @return the all vacation request
+     * @return List of vacation requests
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -61,7 +64,7 @@ public class VacationRequestController {
      *
      * @param userPrincipal the user principal
      * @param response      the response
-     * @return the users vacation request
+     * @return List of the users approved vacation request
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -96,7 +99,7 @@ public class VacationRequestController {
      * @param userPrincipal   the user principal
      * @param vacationRequest the vacation request
      * @param response        the response
-     * @return the int
+     * @return vacation request id
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -144,11 +147,11 @@ public class VacationRequestController {
     }
 
     /**
-     * Edit request string.
+     * Edit request message.
      *
      * @param id     the id
      * @param status the status
-     * @return the string
+     * @return the changed status
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PatchMapping("/admin/request/{id}/edit")
@@ -185,10 +188,10 @@ public class VacationRequestController {
     /**
      * Gets vacation request by id.
      *
-     * @param vr_ID         the vr id
+     * @param vr_ID         the vacation request id
      * @param userPrincipal the user principal
      * @param response      the response
-     * @return the vacation request by id
+     * @return the vacation request for current user by id
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -239,6 +242,14 @@ public class VacationRequestController {
         }
     }
 
+    /**
+     * Delete vacation request as admin .
+     *
+     * @param vr_ID    the vacation request id
+     * @param response the response
+     * @return boolean of delete success operation
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/admin/request/{vr_ID}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -247,12 +258,21 @@ public class VacationRequestController {
         long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
         long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
-        vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
+        vacationRequestRepo.deleteRequest_State(vr_ID, id, status_id, comment_id);
         response.setStatus(200);
         return true;
     }
 
 
+    /**
+     * Delete vacation request of current user.
+     *
+     * @param userPrincipal the user principal
+     * @param vr_ID         the vacation request id
+     * @param response      the response
+     * @return boolean of delete success operation
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/request/{vr_ID}")
     public boolean deleteVacationRequest(@CurrentUser UserPrincipal userPrincipal, @PathVariable int vr_ID, HttpServletResponse response) throws IOException {
@@ -262,7 +282,7 @@ public class VacationRequestController {
         long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
         long user_id = userPrincipal.getId();
 
-        if(user_id == id){
+        if (user_id == id) {
             vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
             response.setStatus(200);
             return true;

@@ -7,6 +7,9 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
+/**
+ * The type Comment repo.
+ */
 public class CommentRepo implements MainRepository<Comment> {
 
     @Override
@@ -69,6 +72,13 @@ public class CommentRepo implements MainRepository<Comment> {
         }
     }
 
+    /**
+     * Delete comment.
+     *
+     * @param r_id the vacation request id
+     * @param c_id the comment id
+     * @param u_id the user id
+     */
     public void deleteComment(long r_id, long c_id, long u_id) {
         System.out.println("COMMENTID " + c_id);
         System.out.println("USERID " + u_id);

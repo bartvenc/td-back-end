@@ -8,6 +8,9 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
+/**
+ * The type Ineligible period repo.
+ */
 public class IneligiblePeriodRepo implements MainRepository<IneligiblePeriod> {
 
     @Override
@@ -71,6 +74,12 @@ public class IneligiblePeriodRepo implements MainRepository<IneligiblePeriod> {
         }
     }
 
+    /**
+     * Delete inel.
+     *
+     * @param id   the ineligble period id
+     * @param u_id the user id
+     */
     public void deleteInel(long id, long u_id) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

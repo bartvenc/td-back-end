@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Ineligible period controller.
+ */
 @RestController
 public class IneligiblePeriodController {
 
@@ -22,6 +25,14 @@ public class IneligiblePeriodController {
     private UserRepository userRepository;
 
 
+    /**
+     * Create Ineligible Period .
+     *
+     * @param userPrincipal    the user principal
+     * @param ineligiblePeriod the ineligible period
+     * @param response         the response
+     * @return the ineligible period id
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/admin/ineligible")
     @PreAuthorize("hasRole('ADMIN')")
@@ -37,6 +48,13 @@ public class IneligiblePeriodController {
         return ineligiblePeriod.getIp_id();
     }
 
+    /**
+     * Gets Ineligible Period.
+     *
+     * @param response the response
+     * @return the Ineligible Period
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/ineligible")
     public List<IneligiblePeriod> getIP(HttpServletResponse response) throws IOException {
@@ -49,6 +67,14 @@ public class IneligiblePeriodController {
         return IPs;
     }
 
+    /**
+     * Gets ineligible period by id.
+     *
+     * @param ip_id    the ineligible period id
+     * @param response the response
+     * @return the ineligible period by id
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/admin/ineligible/{ip_id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -63,6 +89,13 @@ public class IneligiblePeriodController {
         return returnIP;
     }
 
+    /**
+     * Delete ineligible period by id.
+     *
+     * @param ip_id    the ineligible period id
+     * @param response the response
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/admin/ineligible/{ip_id}")
     @PreAuthorize("hasRole('ADMIN')")

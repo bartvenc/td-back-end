@@ -1,5 +1,6 @@
 package no.experis.tbbackend.controller;
 
+
 import no.experis.tbbackend.model.Comment;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
@@ -13,18 +14,30 @@ import no.experis.tbbackend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * The type Comment controller.
+ */
 @RestController
 public class CommentController {
     @Autowired
     private UserRepository userRepository;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
 
+    /**
+     * Gets all comments from request as admin.
+     *
+     * @param r_id the vacation request id
+     * @return Comment list of the all comments from request as an admin
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("admin/request/{r_id}/comment")
     @PreAuthorize("hasRole('ADMIN')")
@@ -53,6 +66,15 @@ public class CommentController {
     }
 
 
+    /**
+     * Gets all comments from request.
+     *
+     * @param r_id          the vacation request id
+     * @param userPrincipal the current user
+     * @param response      the response
+     * @return List of all comments from request as current user
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request/{r_id}/comment")
     public List<Comment> getAllCommentsFromRequest(@PathVariable int r_id,
@@ -88,6 +110,16 @@ public class CommentController {
     }
 
 
+    /**
+     * Add comment to vacation request comment.
+     *
+     * @param r_id          the vacation request id
+     * @param comment       the comment
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return the comment
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/request/{r_id}/comment")
     public Comment addCommentToVacationRequest(@PathVariable int r_id, @RequestBody Comment comment,
@@ -122,6 +154,7 @@ public class CommentController {
             System.out.println("new comment " + editVacation.getComment().iterator().next().getMessage());
 
             vacationRequestRepo.update(editVacation);
+            //Comment newnewComment = commentRepo.findById(comment.getComment_id());
             comment.addUser(requestUser);
             commentRepo.update(comment);
             response.setStatus(200);
@@ -132,6 +165,16 @@ public class CommentController {
         }
     }
 
+    /**
+     * Add comment to vacation request as admin comment.
+     *
+     * @param r_id          the vacation request id
+     * @param comment       the comment
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return the comment
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("admin/request/{r_id}/comment")
     @PreAuthorize("hasRole('ADMIN')")
@@ -161,7 +204,6 @@ public class CommentController {
         Singleton.getInstance().getArrayList().add(newNote);
 
 
-
         if (editVacation != null) {
             commentRepo.save(comment);
             editVacation.addComment(comment);
@@ -178,6 +220,16 @@ public class CommentController {
     }
 
 
+    /**
+     * Gets request comment by id as admin.
+     *
+     * @param r_id          the vacation request id
+     * @param c_id          the comment id
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return comment the request comment by id as admin
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("admin/request/{r_id}/comment/{c_id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -197,6 +249,16 @@ public class CommentController {
         return comment;
     }
 
+    /**
+     * Gets request comment by id.
+     *
+     * @param r_id          the vacation request id
+     * @param c_id          the comment id
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @return the request comment by id
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/request/{r_id}/comment/{c_id}")
     public Comment getRequestCommentByID(@PathVariable int r_id, @PathVariable int c_id,
@@ -219,6 +281,15 @@ public class CommentController {
         }
     }
 
+    /**
+     * Delete comment by id.
+     *
+     * @param r_id          the vacation request id
+     * @param c_id          the comment id
+     * @param userPrincipal the user principal
+     * @param response      the response
+     * @throws IOException the io exception
+     */
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/admin/request/{r_id}/comment/{c_id}")
     public void deleteCommentByID(@PathVariable int r_id, @PathVariable int c_id,

@@ -6,6 +6,9 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Enumeration;
 
+/**
+ * The type Sequence generator.
+ */
 public class SequenceGenerator {
     private static final int TOTAL_BITS = 64;
     private static final int EPOCH_BITS = 42;
@@ -23,7 +26,12 @@ public class SequenceGenerator {
     private long lastTimestamp = -1L;
     private long sequence = 0L;
 
-    // Create Snowflake with a machineId
+    /**
+     * Instantiates a new Sequence generator.
+     *
+     * @param machineId the machine id
+     */
+// Create Snowflake with a machineId
     public SequenceGenerator(int machineId) {
         if (machineId < 0 || machineId > maxMachineId) {
             throw new IllegalArgumentException(String.format("MachineId must be between %d and %d", 0, maxMachineId));
@@ -31,12 +39,20 @@ public class SequenceGenerator {
         this.machineId = machineId;
     }
 
-    // Let Snowflake generate a machineId
+    /**
+     * Instantiates a new Sequence generator.
+     */
+// Let Snowflake generate a machineId
     public SequenceGenerator() {
         this.machineId = createMachineId();
     }
 
 
+    /**
+     * Next id long.
+     *
+     * @return the long
+     */
     public long nextId() {
         long currentTimestamp = timestamp();
 
