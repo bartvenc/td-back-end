@@ -16,9 +16,16 @@ import java.io.IOException;
 
 import static no.experis.tbbackend.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
+/**
+ * The type Oauth2 authentication failure handler. If the Oauth2 callback results in an error,
+ * this class is invoked.
+ */
 @Component
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    /**
+     * The Http cookie o auth 2 authorization request repository.
+     */
     @Autowired
     HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 

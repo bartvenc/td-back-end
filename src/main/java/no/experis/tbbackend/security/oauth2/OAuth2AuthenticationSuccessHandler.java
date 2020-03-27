@@ -20,6 +20,13 @@ import java.util.Optional;
 
 import static no.experis.tbbackend.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
+/**
+ * The type O auth 2 authentication success handler.
+ * If the Oauth2 callback is successful (Authentication is successful) and it contains the authorization code,
+ * this class will exchange the authorization_code with an access token and invoke the
+ * customOAuth2UserService in the SecurityConfig file. After successful exchange the user is redirected using the
+ * redirect_URI
+ */
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
@@ -30,6 +37,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
 
+    /**
+     * Instantiates a new Oauth2 authentication success handler.
+     *
+     * @param tokenProvider                                  the token provider
+     * @param appProperties                                  the app properties
+     * @param httpCookieOAuth2AuthorizationRequestRepository the http cookie o auth 2 authorization request repository
+     */
     @Autowired
     OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties,
                                        HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
@@ -68,6 +82,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build().toUriString();
     }
 
+    /**
+     * Clear authentication attributes.
+     *
+     * @param request  the request
+     * @param response the response
+     */
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
         httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);

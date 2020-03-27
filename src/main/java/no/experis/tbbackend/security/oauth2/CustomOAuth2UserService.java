@@ -20,12 +20,21 @@ import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+/**
+ * The type Custom Oauth2 user service.
+ * This class retrieves the authenticated user details, creates a new entry in the database or updates the existing entry.
+ */
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * This method is called after teh access token is obtained, the user details are fetched
+     * from the OAuth2 provider,
+     *
+     */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);

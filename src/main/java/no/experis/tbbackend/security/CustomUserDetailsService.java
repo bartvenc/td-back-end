@@ -12,9 +12,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+/**
+ * The type Custom user details service. Fetches the User details used for authentication,
+ * and validation based on roles.
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    /**
+     * The User repository.
+     */
     @Autowired
     UserRepository userRepository;
 
@@ -30,6 +37,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         return UserPrincipal.create(user);
     }
 
+    /**
+     * Load user by id user details.
+     *
+     * @param id the id
+     * @return the user details object
+     */
     @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
