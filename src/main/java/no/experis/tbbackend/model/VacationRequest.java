@@ -64,7 +64,7 @@ public class VacationRequest {
      *
      * @param title        the title
      * @param period_start the period start
-     * @param period_end   the period end @
+     * @param period_end   the period end
      */
     public VacationRequest(String title, String period_start, String period_end) {
         this.title = title;
@@ -119,7 +119,7 @@ public class VacationRequest {
     }
 
     /**
-     * Add request.
+     * Add vacation request status.
      *
      * @param vacationRequestStatus the vacation request status
      */
@@ -182,7 +182,7 @@ public class VacationRequest {
     }
 
     /**
-     * Gets owner.
+     * Gets owner arrayList.
      *
      * @return the owner
      */
@@ -191,7 +191,7 @@ public class VacationRequest {
     }
 
     /**
-     * Sets owner.
+     * Sets owner arrayList.
      *
      * @param owner the owner
      */
@@ -200,7 +200,7 @@ public class VacationRequest {
     }
 
     /**
-     * Add owner.
+     * Add user to owner array.
      *
      * @param owner the owner
      */
@@ -209,7 +209,7 @@ public class VacationRequest {
     }
 
     /**
-     * Gets status.
+     * Gets status array.
      *
      * @return the status
      */
@@ -218,7 +218,7 @@ public class VacationRequest {
     }
 
     /**
-     * Sets status.
+     * Sets vacation request status into status array.
      *
      * @param status the status
      */
@@ -227,7 +227,7 @@ public class VacationRequest {
     }
 
     /**
-     * Gets moderator id.
+     * Gets moderator id array.
      *
      * @return the moderator id
      */
@@ -236,7 +236,7 @@ public class VacationRequest {
     }
 
     /**
-     * Sets moderator id.
+     * Sets moderator id array.
      *
      * @param moderator_id the moderator id
      */
@@ -245,7 +245,7 @@ public class VacationRequest {
     }
 
     /**
-     * Add moderator.
+     * Adds user to moderator array.
      *
      * @param moderator the moderator
      */
@@ -254,7 +254,7 @@ public class VacationRequest {
     }
 
     /**
-     * Add comment.
+     * Add comment to comment array.
      *
      * @param comment the comment
      */

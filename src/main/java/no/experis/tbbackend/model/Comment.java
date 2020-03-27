@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -21,12 +22,15 @@ import java.util.Set;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "comment_id")
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int comment_id;
     private String message;
+
     private String datetimestamp;
     @JsonIgnore
+
     private Date date;
 
 
@@ -79,6 +83,7 @@ public class Comment {
      * Instantiates a new Comment.
      */
     public Comment() {
+
         this.message = "null";
         this.datetimestamp = "null";
         this.date = null;
@@ -94,9 +99,6 @@ public class Comment {
         this.message = message;
         this.user = new HashSet<>();
     }
-
-
-    // private Set<VacationRequest> vacationRequests;
 
     /**
      * Gets comment id.
@@ -160,13 +162,5 @@ public class Comment {
     public void addUser(User user) {
         this.user.add(user);
     }
-
-    /*public Set<VacationRequest> getVacationRequests() {
-        return vacationRequests;
-    }
-
-    public void setVacationRequests(Set<VacationRequest> vacationRequests) {
-        this.vacationRequests = vacationRequests;
-    }*/
 }
 
