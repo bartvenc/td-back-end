@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-54-75-246-118.eu-west-1.compute.amazonaws.com:5432/ddm0anpi2hue4a
-    username: iaagqfgrqhzcxn
-    password: 19028247a60438ba5608b3d59b740d3ff5ca23377f21c97996593acba47a9520
+    url: jdbc:postgresql://ec2-54-197-48-79.compute-1.amazonaws.com:5432/d81dv9afeoofq8
+    username: wphzxdagmtjtnz
+    password: ff100d7d8bc56ab3ea6401f0f41f21b8f4ab8e9e68e2d254df265ced49fa9d2b
 
   jpa:
     show-sql: true
@@ -19,14 +19,14 @@ spring:
           google:
             clientId: 519435970083-r9oa6c8hnft92eb0sanoqvrp5fnp06j0.apps.googleusercontent.com
             clientSecret: zI11pSBVj70_BldRbmqwMzjt
-            redirectUri: "http://localhost:8080/oauth2/callback/google"#"https://afternoon-mountain-34725.herokuapp.com/oauth2/callback/google"
+            redirectUri: "https://afternoon-mountain-34725.herokuapp.com/oauth2/callback/google"
             scope:
               - email
               - profile
 app:
   auth:
     tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
-    tokenExpirationMsec: 864000000
+    tokenExpirationMsec: 840000000
   oauth2:
     # After successfully authenticating with the OAuth2 Provider,
     # we'll be generating an auth token for the user and sending the token to the
