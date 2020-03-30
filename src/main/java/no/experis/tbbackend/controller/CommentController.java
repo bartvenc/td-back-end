@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -122,22 +123,24 @@ public class CommentController {
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/request/{r_id}/comment")
+
     public Comment addCommentToVacationRequest(@PathVariable int r_id, @RequestBody Comment comment,
                                                @CurrentUser UserPrincipal userPrincipal,
                                                HttpServletResponse response) throws IOException {
         long id = userPrincipal.getId();
         User requestUser = userRepository.findById(id);
-
+        System.out.println("NEW commenntttttttttttttttttttttttttttttttttttttttttttt");
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         CommentRepo commentRepo = new CommentRepo();
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Date newDate = new Date(System.currentTimeMillis());
-        String dateStamp = sdf.format(timestamp).toString();
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Oslo"));
+        String dateStamp = sdf.format(new Date());
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                (editVacation.getRequest_id(),"new comment", newDate,
+                (editVacation.getRequest_id(), "new comment", newDate,
                         dateStamp,
                         "new comment on vacationRequest " + editVacation.getTitle() +
                                 " was created by " + editVacation.getOwner().iterator().next().getName(),
@@ -146,7 +149,7 @@ public class CommentController {
         Singleton.getInstance().getArrayList().add(newNote);
 
         if ((requestUser.getId().equals(editVacation.getOwner().iterator().next().getId()))) {
-            comment.setDatetimestamp(sdf.format(timestamp).toString());
+            comment.setDatetimestamp(dateStamp);
             comment.setDate(new Date(System.currentTimeMillis()));
             commentRepo.save(comment);
 
@@ -188,14 +191,17 @@ public class CommentController {
         CommentRepo commentRepo = new CommentRepo();
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        comment.setDatetimestamp(sdf.format(timestamp).toString());
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Oslo"));
+        String dateStamp = sdf.format(new Date());
+
+        comment.setDatetimestamp(dateStamp);
         comment.setDate(new Date(System.currentTimeMillis()));
         Date newDate = new Date(System.currentTimeMillis());
-        String dateStamp = sdf.format(timestamp).toString();
+
         VacationRequest editVacation = vacationRequestRepo.findById(r_id);
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                (editVacation.getRequest_id(),"new comment", newDate,
+                (editVacation.getRequest_id(), "new comment", newDate,
                         dateStamp,
                         "new comment on vacationRequest " + editVacation.getTitle() +
                                 " was created by Admin ",
