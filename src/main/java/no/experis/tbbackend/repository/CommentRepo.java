@@ -86,8 +86,12 @@ public class CommentRepo implements MainRepository<Comment> {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery("DELETE FROM comment_user where comment_id = ?1 AND user_id = ?2").setParameter(1, 3).setParameter(2, 2).executeUpdate();
-            session.createSQLQuery("DELETE FROM comments where comment_id = ?1").setParameter(1, 3).executeUpdate();
+            System.out.println("------------------------------------------------------------");
+            System.out.println("DELETE FROM comment_user where "+c_id+" and user_d = "+u_id);
+            System.out.println("DELETE FROM comments where comment_id ="+c_id);
+            System.out.println("------------------------------------------------------------");
+            session.createSQLQuery("DELETE FROM comment_user where comment_id = ?1 AND user_id = ?2").setParameter(1, c_id).setParameter(2, u_id).executeUpdate();
+            session.createSQLQuery("DELETE FROM comments where comment_id = ?1").setParameter(1, c_id).executeUpdate();
             //session.createSQLQuery("DELETE FROM request_user where request_id = ?1 and user_id = ?2").setParameter(1, r_id).setParameter(2, c_id).executeUpdate();
             //session.createSQLQuery("DELETE FROM vacation_requests where request_id = ?1").setParameter(1, r_id).executeUpdate();
             transaction.commit();

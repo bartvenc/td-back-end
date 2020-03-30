@@ -299,7 +299,7 @@ public class CommentController {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         VacationRequest vacationRequest = vacationRequestRepo.findById(r_id);
         CommentRepo commentRepo = new CommentRepo();
-
+        System.out.println("FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK");
 
         if ((!requestUser.getId().equals(vacationRequest.getOwner().iterator().next().getId()))) {
             Comment comment = commentRepo.findById(c_id);

@@ -1,11 +1,13 @@
 package no.experis.tbbackend.controller;
 
+import no.experis.tbbackend.model.Comment;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
 import no.experis.tbbackend.model.VacationRequestStatus;
 import no.experis.tbbackend.notification.Notification;
 import no.experis.tbbackend.notification.Singleton;
 import no.experis.tbbackend.notification.VacationRequestNotification;
+import no.experis.tbbackend.repository.CommentRepo;
 import no.experis.tbbackend.repository.UserRepository;
 import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.repository.VacationRequestStatusRepo;
@@ -27,9 +29,6 @@ import java.util.*;
  */
 @RestController
 public class VacationRequestController {
-    /**
-     * The Notification list.
-     */
     public List<Notification> notificationList = new ArrayList<>();
     @Autowired
     private UserRepository userRepository;
@@ -37,10 +36,10 @@ public class VacationRequestController {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
 
     /**
-     * Gets all vacation request as admin.
+     * Gets all vacation request.
      *
      * @param response the response
-     * @return List of vacation requests
+     * @return the all vacation request
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -64,7 +63,7 @@ public class VacationRequestController {
      *
      * @param userPrincipal the user principal
      * @param response      the response
-     * @return List of the users approved vacation request
+     * @return the users vacation request
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -99,7 +98,7 @@ public class VacationRequestController {
      * @param userPrincipal   the user principal
      * @param vacationRequest the vacation request
      * @param response        the response
-     * @return vacation request id
+     * @return the int
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -147,11 +146,11 @@ public class VacationRequestController {
     }
 
     /**
-     * Edit request message.
+     * Edit request string.
      *
      * @param id     the id
      * @param status the status
-     * @return the changed status
+     * @return the string
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PatchMapping("/admin/request/{id}/edit")
@@ -188,10 +187,10 @@ public class VacationRequestController {
     /**
      * Gets vacation request by id.
      *
-     * @param vr_ID         the vacation request id
+     * @param vr_ID         the vr id
      * @param userPrincipal the user principal
      * @param response      the response
-     * @return the vacation request for current user by id
+     * @return the vacation request by id
      * @throws IOException the io exception
      */
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -242,14 +241,6 @@ public class VacationRequestController {
         }
     }
 
-    /**
-     * Delete vacation request as admin .
-     *
-     * @param vr_ID    the vacation request id
-     * @param response the response
-     * @return boolean of delete success operation
-     * @throws IOException the io exception
-     */
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/admin/request/{vr_ID}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -258,32 +249,36 @@ public class VacationRequestController {
         long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
         long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
-        vacationRequestRepo.deleteRequest_State(vr_ID, id, status_id, comment_id);
+
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println("Size of set: "+vacationRequestRepo.findById(vr_ID).getComment().size());
+        for (Comment c_id: vacationRequestRepo.findById(vr_ID).getComment()){
+            System.out.println("------------------------------------------------------------------------------");
+            System.out.println(c_id.getComment_id());
+            //commentRepo.deleteComment(vr_ID, c_id.getComment_id(),id);
+            vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, c_id.getComment_id());
+            System.out.println("------------------------------------------------------------------------------");
+        }
+
+
+
+
         response.setStatus(200);
         return true;
     }
 
 
-    /**
-     * Delete vacation request of current user.
-     *
-     * @param userPrincipal the user principal
-     * @param vr_ID         the vacation request id
-     * @param response      the response
-     * @return boolean of delete success operation
-     * @throws IOException the io exception
-     */
     @CrossOrigin(origins = "", allowedHeaders = "")
     @PatchMapping("/request/{vr_ID}")
     public boolean deleteVacationRequest(@CurrentUser UserPrincipal userPrincipal, @PathVariable int vr_ID, HttpServletResponse response) throws IOException {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
-        long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
-        long user_id = userPrincipal.getId();
 
-        if (user_id == id) {
-            vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
+        long user_id = userPrincipal.getId();
+            long comment_id = vacationRequestRepo.findById((int)id).getComment().iterator().next().getComment_id();
+        if(user_id == id){
+             vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
             response.setStatus(200);
             return true;
         }
