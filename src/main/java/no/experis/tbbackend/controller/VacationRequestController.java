@@ -1,13 +1,11 @@
 package no.experis.tbbackend.controller;
 
-import no.experis.tbbackend.model.Comment;
 import no.experis.tbbackend.model.User;
 import no.experis.tbbackend.model.VacationRequest;
 import no.experis.tbbackend.model.VacationRequestStatus;
 import no.experis.tbbackend.notification.Notification;
 import no.experis.tbbackend.notification.Singleton;
 import no.experis.tbbackend.notification.VacationRequestNotification;
-import no.experis.tbbackend.repository.CommentRepo;
 import no.experis.tbbackend.repository.UserRepository;
 import no.experis.tbbackend.repository.VacationRequestRepo;
 import no.experis.tbbackend.repository.VacationRequestStatusRepo;
@@ -260,18 +258,6 @@ public class VacationRequestController {
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
         long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
 
-        System.out.println("------------------------------------------------------------------------------");
-        System.out.println("Size of set: "+vacationRequestRepo.findById(vr_ID).getComment().size());
-        for (Comment c_id: vacationRequestRepo.findById(vr_ID).getComment()){
-            System.out.println("------------------------------------------------------------------------------");
-            System.out.println(c_id.getComment_id());
-            //commentRepo.deleteComment(vr_ID, c_id.getComment_id(),id);
-            vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, c_id.getComment_id());
-            System.out.println("------------------------------------------------------------------------------");
-        }
-
-
-
 
         response.setStatus(200);
         return true;
@@ -284,11 +270,11 @@ public class VacationRequestController {
         VacationRequestRepo vacationRequestRepo = new VacationRequestRepo();
         long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
-
+        long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
         long user_id = userPrincipal.getId();
-            long comment_id = vacationRequestRepo.findById((int)id).getComment().iterator().next().getComment_id();
+
         if(user_id == id){
-             vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
+            vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
             response.setStatus(200);
             return true;
         }
