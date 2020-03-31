@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -122,12 +125,17 @@ public class VacationRequestController {
 
         vacationRequest.addRequest(vacationRequestStatus);
         vacationRequestRepo.update(vacationRequest);
+
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Date newDate = new Date(System.currentTimeMillis());
-        String dateStamp = sdf.format(timestamp).toString();
+        Date newDate;
+
+        newDate = new Date(System.currentTimeMillis());
+
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Oslo"));
+        String dateStamp = sdf.format(new Date());
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                (vacationRequest.getRequest_id(),"new VacationRequest", newDate,
+                (vacationRequest.getRequest_id(), "new VacationRequest", newDate,
                         dateStamp,
                         "Vacation Request " + vacationRequest.getTitle() +
                                 " was created by " + vacationRequest.getOwner().iterator().next().getName(),
@@ -168,12 +176,14 @@ public class VacationRequestController {
         vacationRequestRepo.update(editVacation);
         vacationRequestStatusRepo.update(requestStatus);
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
         Date newDate = new Date(System.currentTimeMillis());
-        String dateStamp = sdf.format(timestamp).toString();
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Oslo"));
+        String dateStamp = sdf.format(new Date());
+
 
         VacationRequestNotification newNote = new VacationRequestNotification
-                (editVacation.getRequest_id(),"new VacationRequest Status", newDate,
+                (editVacation.getRequest_id(), "new VacationRequest Status", newDate,
                         dateStamp,
                         "Vacation Request " + editVacation.getTitle() + " was " + gotStatus +
                                 " by admin",
