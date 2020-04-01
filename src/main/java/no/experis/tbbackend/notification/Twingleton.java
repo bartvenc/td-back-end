@@ -8,7 +8,7 @@ public class Twingleton {
     private static Twingleton instance;
 
     private Twingleton() {
-        max_vacation_days = 0;
+        max_vacation_days = 25;
     }
 
     public static Twingleton getInstance() {
