@@ -99,7 +99,7 @@ public class UserController {
         JSONObject object = new JSONObject();
         if (returnUser != null) {
 
-            object.put("ID", returnUser.getId());
+            object.put("id", returnUser.getId());
             object.put("name", returnUser.getName());
             object.put("email", returnUser.getEmail());
             object.put("imageUrl", returnUser.getImageUrl());
