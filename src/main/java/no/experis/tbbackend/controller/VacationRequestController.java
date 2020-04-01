@@ -77,15 +77,15 @@ public class VacationRequestController {
         List<VacationRequest> vacationRequests;
 
         vacationRequests = vacationRequestRepo.findAllByUserID(requestUser.getId().intValue());
+        List<VacationRequest> appprovedVacationRequests = vacationRequestRepo.findAllAproved();
 
-        if (!vacationRequests.isEmpty()) {
-            List<VacationRequest> appprovedVacationRequests = vacationRequestRepo.findAllAproved();
+        if (!vacationRequests.isEmpty() || !appprovedVacationRequests.isEmpty()) {
 
             vacationRequests.addAll(appprovedVacationRequests);
-
             HashSet<Object> seen = new HashSet<>();
             vacationRequests.removeIf(e -> !seen.add(e.getRequest_id()));
             response.setStatus(200);
+
         } else {
             response.sendError(400, "vacation not found");
         }
@@ -273,8 +273,8 @@ public class VacationRequestController {
         long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
         long user_id = userPrincipal.getId();
 
-        if(user_id == id){
-            vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
+        if (user_id == id) {
+            vacationRequestRepo.deleteRequest_State(vr_ID, id, status_id, comment_id);
             response.setStatus(200);
             return true;
         }
