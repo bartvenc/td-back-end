@@ -41,7 +41,7 @@ public class VacationDaysController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("admin/vacationDays")
-    public void patchVacationDays(@RequestBody String maxVacationDays, HttpServletResponse response) throws IOException {
+    public int patchVacationDays(@RequestBody String maxVacationDays, HttpServletResponse response) throws IOException {
 
         JSONObject object = new JSONObject();
         JsonObject obj = new Gson().fromJson(maxVacationDays, JsonObject.class);
@@ -49,5 +49,6 @@ public class VacationDaysController {
         int v_days = obj.get("max_vacation_days").getAsInt();
         Twingleton.getInstance().setMax_vacation_days(v_days);
         response.setStatus(200);
+        return v_days;
     }
 }
