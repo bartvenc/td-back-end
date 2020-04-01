@@ -257,8 +257,7 @@ public class VacationRequestController {
         long status_id = vacationRequestRepo.findById(vr_ID).getStatus().iterator().next().getStatus_id();
         long id = vacationRequestRepo.findById(vr_ID).getOwner().iterator().next().getId();
         long comment_id = vacationRequestRepo.findById(vr_ID).getComment().iterator().next().getComment_id();
-
-
+        vacationRequestRepo.deleteRequest_State(vr_ID, id,status_id, comment_id);
         response.setStatus(200);
         return true;
     }
