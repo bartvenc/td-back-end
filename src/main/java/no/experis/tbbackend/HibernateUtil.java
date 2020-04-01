@@ -17,9 +17,9 @@ public class HibernateUtil {
                 Configuration configuration = new Configuration();
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "org.postgresql.Driver");
-                settings.put(Environment.URL, "jdbc:postgresql://ec2-54-75-246-118.eu-west-1.compute.amazonaws.com:5432/ddm0anpi2hue4a");
-                settings.put(Environment.USER, "iaagqfgrqhzcxn");
-                settings.put(Environment.PASS, "19028247a60438ba5608b3d59b740d3ff5ca23377f21c97996593acba47a9520");
+                settings.put(Environment.URL, "jdbc:postgresql://ec2-52-87-135-240.compute-1.amazonaws.com:5432/d4l1d625u2up75");
+                settings.put(Environment.USER, "suqdiuqoldexnd");
+                settings.put(Environment.PASS, "b9c827eb638690867e3425256dc61dd9391e3ea4d18b066e6afa8acc4575653e");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
