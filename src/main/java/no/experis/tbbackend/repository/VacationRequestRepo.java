@@ -91,7 +91,7 @@ public class VacationRequestRepo implements MainRepository<VacationRequest> {
             session.createSQLQuery("DELETE FROM request_state where request_id = ?1 AND status_id = ?2").setParameter(1, id).setParameter(2, status_id).executeUpdate();
             session.createSQLQuery("DELETE FROM vacation_request_status where status_id = ?1").setParameter(1, status_id).executeUpdate();
             session.createSQLQuery("DELETE FROM request_user where request_id = ?1 and user_id = ?2").setParameter(1, id).setParameter(2, userId).executeUpdate();
-            session.createSQLQuery("DELETE FROM vacation_request_comments where request_id = ?1 and comment_id = ?2").setParameter(1, id).setParameter(2, comment_id).executeUpdate();
+            session.createSQLQuery("DELETE FROM vacation_request_comments where request_id = ?1").setParameter(1, id).executeUpdate();
             session.createSQLQuery("DELETE FROM vacation_requests where request_id = ?1").setParameter(1, id).executeUpdate();
             transaction.commit();
         }catch (Exception e) {
